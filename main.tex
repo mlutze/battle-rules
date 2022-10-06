@@ -1,0 +1,216 @@
+\documentclass{article}
+\usepackage[margin=2cm]{geometry}
+\usepackage{enumitem}
+\usepackage{amsmath}
+
+\setlist[itemize]{noitemsep} 
+\setlist[enumerate]{noitemsep} 
+
+\begin{document}
+
+\title{D\&D 5e Wargame Experiment}
+\author{Matt}
+\maketitle
+
+\section{Idea}
+
+The principle properties the wargame rules should satisfy are the following:
+\begin{enumerate}
+    \item \label{itm:smooth} Gameplay should be relatively simple and smooth;
+        i.e., no complex calculations during play.
+    \item \label{itm:auto} Rules should be automatically derived from the situation,
+        without the need for ad-hoc rule introductions for each situation in play.
+    \item \label{itm:strength} Creature strength should be true to the stats of the individual creatures.
+    \item \label{itm:scale} Rules should scale from smallish skirmishes to large battles.
+\end{enumerate}
+
+In order to address Goal~\ref{itm:smooth}, we separate the conversion into two parts:
+the complex rules to convert a D\&D situation into a wargame situation (Section~\ref{sec:pregame}),
+and the simpler rules to play the wargame (Section~\ref{sec:game}).
+The conversion rules are pure mathematical calculations from creature statistics,
+satisfying Goal~\ref{itm:auto} and Goal~\ref{itm:strength}.
+Finally, we use parameters to scale statistics to an appropriate size for the situation,
+satisfying Goal~\ref{itm:scale}.
+
+\section{Pre-gameplay}\label{sec:pregame}
+
+Before a battle starts,
+calculations are performed based on the participants' D\&D statistics.
+
+\subsection{Parameters}
+
+The parameters are used to scale the battle to an appropriate size.
+Lower values correspond to greater granularity
+and will result in slower, less eventful battles of attrition.
+Higher values correspond to greater abstraction
+and will reult in quick battles where initiative has an important impact.
+
+\begin{itemize}
+    \item $A$ (attack scalar) -- roughly indicates how much damage is required to reduce a unit's health by one point
+    \item $H$ (health scalar) -- indicates how many points of creature health (without armor) are equal to one point of unit health
+\end{itemize}
+
+\subsection{Variables}
+
+We take a single creature's base statistics along with the number of creatures in a unit
+in order to calculate that unit's overall strength.
+
+\subsubsection{Input}
+
+As input, we use a creature's health and AC for its defense,
+and the damage and attack bonus for each of its attacks,
+as well as the unit size.
+
+\begin{itemize}
+    \item $h$ (creature health) -- the maximum hitpoints of a single creature
+    \item $r$ (creature AC) -- the AC of a creature
+    \item $d_a$ (attack damage) -- the average damage done by attack $a$
+    \item $b_a$ (attack bonus) -- the to-hit bonus of attack $a$
+    \item $u$ (unit size) -- the number of creatures in a unit
+\end{itemize}
+
+\subsubsection{Output}
+
+There are two output values.
+The number of dice is an aggregation of a unit's defensive strength and number.
+It is used as a set of hitpoints during combat.
+The size of the die is an aggregation
+of a unit's offensive strength and accuracy \emph{per die}.
+Regardless of unit size,
+two units of the same type will always use the same die size
+(but may use a different number of dice).
+Smaller die size is stronger,
+as the goal is to roll a 1,
+resulting in reducing the opponent's number of dice by 1.
+
+\begin{itemize}
+    \item $n$ (number of dice) -- the number of dice to use for attacks
+    \item $s_a$ (die size) -- the size of the die to use for attack $a$
+\end{itemize}
+
+\subsection{Calculations}
+
+The $n$ and $s$ values are calculated according to the following formulas:
+
+\begin{align*}
+    n   &=  \left\lceil\frac{hu}{H}\right\rceil \\
+    s_a &=  \left\lceil\frac{A}{d_a(\frac{H}{h})}\right\rceil
+\end{align*}
+
+The $n$ formula is explained simply:
+It is the total health of the unit divided by the $H$ parameter,
+rounded up.
+
+The $s_a$ formula is more complex,
+as it must take into account both attacking strength and defensive strength.
+Because $n$ dice (proportional to defense) will be rolled,
+in order to avoid a squared impact of defense,
+the defense must be divided out of the equation.
+
+The development of the formula is as follows:
+The attack value \emph{per creature} is proportional to 
+\[
+    d_a
+\]
+The total attack value of the unit is then 
+\[
+    d_a u
+\]
+We divide this by the number of dice to get attack value per die: 
+\[
+    \frac{d_a u}{n}
+\]
+But to reduce rounding error we instead use the unrounded formula for $n$: 
+\[
+    \frac{d_a u}{\frac{hu}{H}}
+\]
+which simplifies to 
+\[
+    d_a\left(\frac{H}{h}\right)
+\]
+This value is proportional to our hit chance.
+We scale it to a probability by dividing by $A$:
+\[
+    \frac{d_a(\frac{H}{h})}{A}
+\]
+We now have our true hit chance.
+To turn this into a die, we take the reciprocal and round up.
+\[
+    \left\lceil\frac{A}{d_a(\frac{H}{h})}\right\rceil
+\]
+
+\subsection{Examples}
+
+We now demonstrate the use of the formulas through examples.
+
+\subsubsection{Unit of 20 Orcs}
+
+An orc has the following relevant statistics:
+\begin{itemize}
+    \item $h = 15$ HP (2d8 + 6)
+    \item $r = 13$ AC
+    \item Javelin Attack:
+        \begin{itemize}
+            \item $a_j = +5$ to hit
+            \item $d_j = 6.5$ damage (d6 + 3)
+        \end{itemize}
+    \item Greataxe Attack:
+        \begin{itemize}
+            \item $a_g = +5$ to hit
+            \item $d_g = 9.5$ damage (d12 + 3)
+        \end{itemize}
+\end{itemize}
+
+For 20 orcs, given $A = 500$ and $H = 100$
+\begin{alignat*}{2}
+    n   =&  \left\lceil\frac{(15)(20)}{100}\right\rceil             =&  3   \\
+    s_j =&  \left\lceil\frac{500}{6.5(\frac{100}{15})}\right\rceil  =&  12  \\
+    s_g =&  \left\lceil\frac{500}{9.5(\frac{100}{15})}\right\rceil  =&  8
+\end{alignat*}
+
+
+\section{Gameplay}\label{sec:game}
+
+\section{Choosing Parameters}\label{sec:params}
+
+Parameter selection is important for smooth and interesting gameplay.
+One may choose from a number of strategies to help decide on parameters.
+
+\subsection{Max Hit Chance}
+
+One may select the maximum hit chance that they would like to see in the game.
+For example, one may decide that the strongest unit should always hit (i.e., roll a d1)
+or have a 50\% chance of hitting (i.e., roll a d2).
+Taking all units into account and a given $H$ value,
+an $A$ value is selected such that the strongest unit will roll the selected die.
+
+We now effectively have a new parameter $S$, representing the die of the strongest attack.
+We can then reverse the die formula to derive a formula for $A$:
+\[
+    S = \left\lceil\frac{A}{d_a(\frac{H}{h})}\right\rceil
+\]
+We remove rounding and get
+\[
+    S = \frac{A}{d_a(\frac{H}{h})}
+\]
+which we can rearrange to get
+\[
+    A = S(d_a)\left(\frac{H}{h}\right)
+\]
+
+This strategy guarantees a certain hit chance and clearly delineates a strongest unit.
+It must be noted, however, that if a small die size $S$ is chosen,
+then the unit with the second-strongest attack will be at an otherwise great disadvantage,
+as their die size will be rounded to at least $n + 1$.
+
+
+\subsubsection{Example: Orcs Roll d2}
+
+We consider again the 20 orcs example with $H = 100$.
+We want them to have a 50\% chance to hit.
+We solve:
+\begin{alignat*}{2}
+    A &= 2(9.5)\left(\frac{100}{15}\right) &{}\approx{} 126.67
+\end{alignat*}
+
+\end{document}
