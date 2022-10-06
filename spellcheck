@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+aspell check --mode=tex -d en_US --home-dir . "$1"
