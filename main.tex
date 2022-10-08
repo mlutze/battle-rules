@@ -2,6 +2,7 @@
 \usepackage[margin=2cm]{geometry}
 \usepackage{enumitem}
 \usepackage{amsmath}
+\usepackage{todonotes}
 
 \setlist[itemize]{noitemsep} 
 \setlist[enumerate]{noitemsep} 
@@ -48,6 +49,7 @@ and will result in quick battles where initiative has an important impact.
 \begin{itemize}
     \item $A$ (attack scalar) -- roughly indicates how much damage is required to reduce a unit's health by one point
     \item $H$ (health scalar) -- indicates how many points of creature health (without armor) are equal to one point of unit health
+    \item $P$ (accuracy exponent) -- indicates the compounding force of accuracy
 \end{itemize}
 
 \subsection{Variables}
@@ -93,55 +95,90 @@ resulting in reducing the opponent's number of dice by 1.
 The $n$ and $s$ values are calculated according to the following formulas:
 
 \begin{align*}
-    n   &=  \left\lceil\frac{hu}{H}\right\rceil \\
-    s_a &=  \left\lceil\frac{A}{d_a(\frac{H}{h})}\right\rceil
+    n   &=  
+        \left\lceil
+            \frac
+                {h u r^P}
+                {10^P H}
+        \right\rceil \\
+    s_a &=
+        \left\lceil
+            \frac
+                {h r^P A}
+                {d_a b_{a}^P H}
+        \right\rceil
 \end{align*}
 
-The $n$ formula is explained simply:
-It is the total health of the unit divided by the $H$ parameter,
-rounded up.
+\subsubsection{Accuracy}
+
+\todo{accurracy explanation}
+
+The $n$ formula is relatively simple:
+It is the total health of the unit,
+multiplied by a factor representing the value of armor,
+divided by the $H$ parameter:
+\[
+    \frac
+        {h u (\frac{r}{10})^P}
+        {H}
+\]
+We round and simplify to get our value for $n$.
 
 The $s_a$ formula is more complex,
 as it must take into account both attacking strength and defensive strength.
 Because $n$ dice (proportional to defense) will be rolled,
-in order to avoid a squared impact of defense,
+in order to avoid a compounding impact of defense,
 the defense must be divided out of the equation.
 
 The development of the formula is as follows:
-The attack value \emph{per creature} is proportional to 
+The attack value \emph{per creature} is proportional to
+the average damage multiplied by the attack bonus factor.
 \[
-    d_a
+    d_a \left(\frac{10 + b_{a}}{10}\right)^{P}
 \]
 The total attack value of the unit is then 
 \[
-    d_a u
+    d_a u \left(\frac{10 + b_{a}}{10}\right)^{P}
 \]
 We divide this by the number of dice to get attack value per die: 
 \[
-    \frac{d_a u}{n}
+    \frac
+        {d_a u \left(\frac{b_{a}}{10}\right)^{P}}
+        {n}
 \]
 But to reduce rounding error we instead use the unrounded formula for $n$: 
 \[
-    \frac{d_a u}{\frac{hu}{H}}
+    \frac
+        {d_a u \left(\frac{b_{a}}{10}\right)^{P}}
+        {\frac{h u r^P}{10^P H}}
 \]
 which simplifies to 
 \[
-    d_a\left(\frac{H}{h}\right)
+    \frac
+        {d_a b_{a}^P H}
+        {h r^P}
 \]
 This value is proportional to our hit chance.
 We scale it to a probability by dividing by $A$:
 \[
-    \frac{d_a(\frac{H}{h})}{A}
+    \frac
+        {d_a b_{a}^P H}
+        {h r^P A}
 \]
 We now have our true hit chance.
 To turn this into a die, we take the reciprocal and round up.
 \[
-    \left\lceil\frac{A}{d_a(\frac{H}{h})}\right\rceil
+    \left\lceil
+        \frac
+            {h r^P A}
+            {d_a b_{a}^P H}
+    \right\rceil
 \]
 
 \subsection{Examples}
 
 We now demonstrate the use of the formulas through examples.
+\todo{update to new rules}
 
 \subsubsection{Unit of 20 Orcs}
 
@@ -170,8 +207,10 @@ For 20 orcs, given $A = 500$ and $H = 100$
 
 
 \section{Gameplay}\label{sec:game}
+\missingfigure{diagram of play}
 
 \section{Choosing Parameters}\label{sec:params}
+\todo{update to new rules}
 
 Parameter selection is important for smooth and interesting gameplay.
 One may choose from a number of strategies to help decide on parameters.
