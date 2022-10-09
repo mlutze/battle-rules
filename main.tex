@@ -6,6 +6,7 @@
 
 \setlist[itemize]{noitemsep} 
 \setlist[enumerate]{noitemsep} 
+\setlength{\marginparwidth}{2cm}
 
 \begin{document}
 
@@ -130,9 +131,23 @@ The $n$ and $s$ values are calculated according to the following formulas:
 D\&D's concept of accuracy is a source of complications in the formulas,
 and must be addressed specifically.
 
+We begin by observing that in standard D\&D rules,
+an increase by a factor of $x$ in an attack's accuracy
+can be roughly equivalently represented by a decrease in a defender's
+health by a factor of $x$.
+For example, if an attack normally has a 25\% chance of hitting a defender with 2 hitpoints,
+we might reasonably expect the defender to last 8 rounds.\todo{maybe footnote about why this isn't really accurate}
+If we raise the accuracy to 50\%,
+the defender would need around 4 hitpoints to last 8 rounds.
+
+Accuracy of attacks in standard D\&D is not derived from one statistic,
+but from two: the attacker's attack bonus and the defender's AC.
+Modelling this directly would present a problem for the transformation,
+as it would necessitate an additional statistic and comparison during gameplay.
+Instead, we try to bundle the effect of AC the $n$,
+and the effect of attack bonus into $s_a$.
 
 
-\todo[inline]{accurracy explanation}
 
 \subsubsection{Deriving the Formulas}
 
