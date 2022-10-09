@@ -17,8 +17,8 @@
 
 The principle properties the wargame rules should satisfy are the following:
 \begin{enumerate}
-    \item \label{itm:smooth} Gameplay should be relatively simple and smooth;
-        i.e., no complex calculations during play.
+    \item \label{itm:smooth} Gameplay should be simple and smooth;
+        i.e., no calculations and few statistics to lookup during play.
     \item \label{itm:auto} Rules should be automatically derived from the situation,
         without the need for ad-hoc rule introductions for each situation in play.
     \item \label{itm:strength} Creature strength should be true to the stats of the individual creatures.
@@ -32,6 +32,11 @@ The conversion rules are pure mathematical calculations from creature statistics
 satisfying Goal~\ref{itm:auto} and Goal~\ref{itm:strength}.
 Finally, we use parameters to scale statistics to an appropriate size for the situation,
 satisfying Goal~\ref{itm:scale}.
+
+The result is a system where each unit in the battle boils down to two numbers.
+Very little math has to be performed during play,
+to permit management of large battlefields
+with minimal confusion.
 
 \section{Pre-gameplay}\label{sec:pregame}
 
@@ -56,8 +61,8 @@ the resulting statistics of army $A$ will be at least as strong as those of army
 
 The valid ranges for the parameters are the following:
 \begin{align*}
-    A >= 1 \\
-    H >= 1 \\
+    A > 0 \\
+    H > 0 \\
     P >= 0
 \end{align*}
 Section~\ref{sec:params} contains further guidance on selecting values for the parameters.
@@ -121,7 +126,14 @@ The $n$ and $s$ values are calculated according to the following formulas:
 
 \subsubsection{Accuracy}
 
+D\&D's concept of accuracy is a source of complications in the formulas,
+and must be addressed specifically.
+
+
+
 \todo[inline]{accurracy explanation}
+
+\subsubsection{Deriving the Formulas}
 
 The $n$ formula is relatively simple:
 It is the total health of the unit,
