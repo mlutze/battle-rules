@@ -136,7 +136,12 @@ an increase by a factor of $x$ in an attack's accuracy
 can be roughly equivalently represented by a decrease in a defender's
 health by a factor of $x$.
 For example, if an attack normally has a 25\% chance of hitting a defender with 2 hitpoints,
-we might reasonably expect the defender to last 8 rounds.\todo{maybe footnote about why this isn't really accurate}
+we might reasonably expect the defender to last 8 rounds.\footnote{
+    This approximation follows intuition,
+    but is not statistically correct with respect to expected values.
+    It is considered sufficient for this draft
+    but may be revisited in a future version.
+}
 If we raise the accuracy to 50\%,
 the defender would need around 4 hitpoints to last 8 rounds.
 
@@ -295,7 +300,9 @@ One should consider a number of options when deciding on parameter values.
 
 \subsection{The $P$ parameter}
 
-\todo[inline]{explain P param}
+The $P$ parameter is the most nebulous of the parameters,
+as it doesn't correspond to any real statistic.
+The current recommendation is to assign it a value of 2.
 
 \subsection{Max Hit Chance}
 
