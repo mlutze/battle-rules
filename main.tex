@@ -41,17 +41,26 @@ calculations are performed based on the participants' D\&D statistics.
 \subsection{Parameters}
 
 The parameters are used to scale the battle to an appropriate size.
-Lower values correspond to greater granularity
-and will result in slower, less eventful battles of attrition.
-\todo{explain more generally; guidance on selecting params goes later}
-Higher values correspond to greater abstraction
-and will result in quick battles where initiative has an important impact.
+They control the likelihood of an attack to hit,
+by affecting the length of the battle.
 
 \begin{itemize}
     \item $A$ (attack scalar) -- roughly indicates how much damage is required to reduce a unit's health by one point
     \item $H$ (health scalar) -- indicates how many points of creature health (without armor) are equal to one point of unit health
     \item $P$ (accuracy exponent) -- indicates the compounding force of accuracy
 \end{itemize}
+
+Provided they are ascribed valid values,
+the invariant is maintained that if army $A$ is objectively stronger than army $B$,
+the resulting statistics of army $A$ will be at least as strong as those of army $B$.
+
+The valid ranges for the parameters are the following:
+\begin{align*}
+    A >= 1 \\
+    H >= 1 \\
+    P >= 0
+\end{align*}
+Section~\ref{sec:params} contains further guidance on selecting values for the parameters.
 
 \subsection{Variables}
 
