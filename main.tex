@@ -105,13 +105,13 @@ The $n$ and $s$ values are calculated according to the following formulas:
         \left\lceil
             \frac
                 {h r^P A}
-                {d_a b_{a}^P H}
+                {d_a (10 + b_{a})^P H}
         \right\rceil
 \end{align*}
 
 \subsubsection{Accuracy}
 
-\todo{accurracy explanation}
+\todo[inline]{accurracy explanation}
 
 The $n$ formula is relatively simple:
 It is the total health of the unit,
@@ -143,26 +143,26 @@ The total attack value of the unit is then
 We divide this by the number of dice to get attack value per die: 
 \[
     \frac
-        {d_a u \left(\frac{b_{a}}{10}\right)^{P}}
+        {d_a u \left(\frac{10 + b_{a}}{10}\right)^{P}}
         {n}
 \]
 But to reduce rounding error we instead use the unrounded formula for $n$: 
 \[
     \frac
-        {d_a u \left(\frac{b_{a}}{10}\right)^{P}}
+        {d_a u \left(\frac{10 + b_{a}}{10}\right)^{P}}
         {\frac{h u r^P}{10^P H}}
 \]
 which simplifies to 
 \[
     \frac
-        {d_a b_{a}^P H}
+        {d_a (10 + b_{a})^P H}
         {h r^P}
 \]
 This value is proportional to our hit chance.
 We scale it to a probability by dividing by $A$:
 \[
     \frac
-        {d_a b_{a}^P H}
+        {d_a (10 + b_{a})^P H}
         {h r^P A}
 \]
 We now have our true hit chance.
@@ -171,14 +171,13 @@ To turn this into a die, we take the reciprocal and round up.
     \left\lceil
         \frac
             {h r^P A}
-            {d_a b_{a}^P H}
+            {d_a (10 + b_{a})^P H}
     \right\rceil
 \]
 
 \subsection{Examples}
 
 We now demonstrate the use of the formulas through examples.
-\todo{update to new rules}
 
 \subsubsection{Unit of 20 Orcs}
 
@@ -188,21 +187,40 @@ An orc has the following relevant statistics:
     \item $r = 13$ AC
     \item Javelin Attack:
         \begin{itemize}
-            \item $a_j = +5$ to hit
+            \item $b_j = +5$ to hit
             \item $d_j = 6.5$ damage (d6 + 3)
         \end{itemize}
     \item Greataxe Attack:
         \begin{itemize}
-            \item $a_g = +5$ to hit
+            \item $b_g = +5$ to hit
             \item $d_g = 9.5$ damage (d12 + 3)
         \end{itemize}
 \end{itemize}
 
-For 20 orcs, given $A = 500$ and $H = 100$
+For 20 orcs, given $A = 500$, $H = 100$, and $P = 2$
 \begin{alignat*}{2}
-    n   =&  \left\lceil\frac{(15)(20)}{100}\right\rceil             =&  3   \\
-    s_j =&  \left\lceil\frac{500}{6.5(\frac{100}{15})}\right\rceil  =&  12  \\
-    s_g =&  \left\lceil\frac{500}{9.5(\frac{100}{15})}\right\rceil  =&  8
+    n   =&  
+        \left\lceil
+            \frac
+                {(15) (20) (13^2)}
+                {(10^2) (100)}
+        \right\rceil
+            &=  6
+    \\
+    s_a =&
+        \left\lceil
+            \frac
+                {(15) (13^2) (500)}
+                {(6.5) (10 + 5)^2 (100)}
+        \right\rceil
+            &=   26 \\
+    s_g =&  
+        \left\lceil
+            \frac
+                {(15) (13^2) (500)}
+                {(9.5) (10 + 5)^2 (100)}
+        \right\rceil
+            &=  18
 \end{alignat*}
 
 
@@ -210,31 +228,38 @@ For 20 orcs, given $A = 500$ and $H = 100$
 \missingfigure{diagram of play}
 
 \section{Choosing Parameters}\label{sec:params}
-\todo{update to new rules}
 
 Parameter selection is important for smooth and interesting gameplay.
-One may choose from a number of strategies to help decide on parameters.
+One should consider a number of options when deciding on parameter values.
+
+\subsection{The $P$ parameter}
+
+\todo[inline]{explain P param}
 
 \subsection{Max Hit Chance}
 
 One may select the maximum hit chance that they would like to see in the game.
 For example, one may decide that the strongest unit should always hit (i.e., roll a d1)
 or have a 50\% chance of hitting (i.e., roll a d2).
-Taking all units into account and a given $H$ value,
+Taking all units into account and a given $H$ value and $P$ value,
 an $A$ value is selected such that the strongest unit will roll the selected die.
 
 We now effectively have a new parameter $S$, representing the die of the strongest attack.
 We can then reverse the die formula to derive a formula for $A$:
 \[
-    S = \left\lceil\frac{A}{d_a(\frac{H}{h})}\right\rceil
+    S =
+        \left\lceil
+            \frac
+                {h r^P A}
+                {d_a (10 + b_{a})^P H}
+        \right\rceil
 \]
-We remove rounding and get
+After removing rounding, we can rearrange the formula to derive $A$:
 \[
-    S = \frac{A}{d_a(\frac{H}{h})}
-\]
-which we can rearrange to get
-\[
-    A = S(d_a)\left(\frac{H}{h}\right)
+    A = 
+        \frac
+            {d_a (10 + b_{a})^P H S}
+            {h r^P}
 \]
 
 This strategy guarantees a certain hit chance and clearly delineates a strongest unit.
@@ -245,11 +270,15 @@ as their die size will be rounded to at least $n + 1$.
 
 \subsubsection{Example: Orcs Roll d2}
 
-We consider again the 20 orcs example with $H = 100$.
+We consider again the 20 orcs example with $H = 100$ and $P = 2$.
 We want them to have a 50\% chance to hit.
 We solve:
 \begin{alignat*}{2}
-    A &= 2(9.5)\left(\frac{100}{15}\right) &{}\approx{} 126.67
+    A &= 
+        \frac
+            {(9.5) (10 + 5)^2 (100) (2)}
+            {(15) (13)^2}
+        &{}\approx{} 168.63
 \end{alignat*}
 
 \end{document}
