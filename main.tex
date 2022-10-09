@@ -147,7 +147,30 @@ as it would necessitate an additional statistic and comparison during gameplay.
 Instead, we try to bundle the effect of AC the $n$,
 and the effect of attack bonus into $s_a$.
 
-\todo[inline]{continue}
+It is not possible to replicate the effect of accuracy fully, however.
+To demonstrate, we turn to an example of a commonner (+2 attack bonus)
+attacking a tarrasque (25 AC).
+Barring critical hits, the commoner will never be able to hit the tarrasque,
+as the maximum roll of 22 is less than the tarrasque's AC.
+The result is that the $n$ value for a tarrasque unit must be infinite,
+or that the $s_a$ value for a commoner unit must be infinite.
+
+Clearly, neither of these options is practical.
+Instead of modelling the asymptotic effect of AC and attack bonus directly,
+we use power function to approximate it.
+AC is converted into a defence factor:
+\[
+    \left(\frac{r}{10}\right)^P
+\]
+AC is first divided by 10,
+as 10 is the standard AC without bonuses or penalties,
+then raised to a power $P$ which represents the multiplicative power of AC.
+
+The factor for attack bonus is derived similarly,
+but 10 added, establishing 0 as the baseline attack bonus:
+\[
+    \left(\frac{10 + b_a}{10}\right)^P
+\]
 
 \subsubsection{Deriving the Formulas}
 
