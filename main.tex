@@ -289,6 +289,73 @@ For 20 orcs, given $A = 500$, $H = 100$, and $P = 2$
             &=  18
 \end{alignat*}
 
+\subsubsection{Armored vs Unarmored Commoners}
+
+Here we see the effect of armor on the statistics.
+A commoner has the following relevant statistics:
+
+\begin{itemize}
+    \item $h = 4.5$ HP (1d8)
+    \item $r = 10$ AC
+    \item Club Attack:
+        \begin{itemize}
+            \item $b_c = +2$ to hit
+            \item $d_c = 2.5$ damage (1d4)
+        \end{itemize}
+\end{itemize}
+
+
+For 100 commoners, given $A = 500$, $H = 100$, and $P = 2$
+
+\begin{alignat*}{2}
+    n   &=  
+        \left\lceil
+            \frac
+                {(4.5) (100) (10^2)}
+                {(10^2) (100)}
+        \right\rceil
+            &= 5
+    \\
+    s_c &=
+        \left\lceil
+            \frac
+                {(4.5) (10^2) (500)}
+                {(2.5) (10 + 2)^P (100)}
+        \right\rceil
+            &= 7
+\end{alignat*}
+
+Equipped with chain shirts, the commoners' AC rises to 13.
+This affects their statistics as follows:
+
+\begin{alignat*}{2}
+    n   &=  
+        \left\lceil
+            \frac
+                {(4.5) (100) (13^2)}
+                {(10^2) (100)}
+        \right\rceil
+            &= 8
+    \\
+    s_c &=
+        \left\lceil
+            \frac
+                {(4.5) (13^2) (500)}
+                {(2.5) (10 + 2)^P (100)}
+        \right\rceil
+            &= 11
+\end{alignat*}
+
+Note that while the armored commoners have more dice,
+representing their superior defense,
+their larger die size causes each individual die less likely to land a hit.
+As the units have the same size and weapons,
+their ought to have the same attacking power.
+Confirming the validity of the conversion,
+the expected damage of each unit is the same,
+within a rounding error:
+$\frac{5}{7} \approx 71\%$ for the unarmored commoners,
+and $\frac{8}{11} \approx 73\%$ for the armored commoners.
 
 \section{Gameplay}\label{sec:game}
 \missingfigure{diagram of play}
