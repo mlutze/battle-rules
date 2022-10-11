@@ -251,7 +251,7 @@ we multiply by $S$, round up, and subtract from $S$
     \right\rceil
 \]
 
-\subsection{Examples}
+\subsection{Examples}\label{sec:examples}
 
 We now demonstrate the use of the formulas through examples.
 
@@ -385,7 +385,7 @@ due to the natural lack of granularity of die rolls.
 Parameter selection is important for smooth and interesting gameplay.
 One should consider a number of options when deciding on parameter values.
 
-\subsection{The $P$ parameter}
+\subsection{The $P$ Parameter}
 
 The $P$ parameter is the most nebulous of the parameters,
 as it doesn't correspond to any real statistic.
@@ -393,14 +393,27 @@ The current recommendation is to assign it a value of 2.
 
 \subsection{Minimum Hit Chance}
 
-\todo[inline]{this actually needs to consider the minimum attack/health ratio
-since more health leads to lower hit chance}
-
 One may select the maximum hit chance that they would like to see in the game.
-For example, one may decide that the weakest unit should have a minimal chance of hitting
+For example, one may decide
+that the unit with the least accurate attack (per die)
+should only hit with the minimal frequency allowed by the system
 (i.e. require a maximal die roll to hit).
+This unit is not necessarily the weakest unit,
+but rather the unit whose attacking strenth (of its weakest attack)
+is most significantly weaker than
+its defending strength.
+
+We begin by identifying this unit.
+The unit with the lowest attack--defend ratio is the unit for which the following formula is minimal.
+\[
+    \frac
+        {d_a (10 + b_a)^P}
+        {h r^P}
+\]
+This is the formula for hit chance, without the common constants.
+
 Taking all units into account and a given $H$ value, $P$ value, and $S$ value,
-an $A$ value is selected such that the weakest unit will need to roll $S$ to hit.
+an $A$ value is selected such that this unit will need to roll $S$ to hit.
 
 We now effectively have a new parameter $M$, representing the target roll.
 We can then reverse the die formula to derive a formula for $A$:
@@ -432,19 +445,95 @@ we remove rounding and rearrange to get
             {h r^P (S - M)}
 \]
 
-\subsubsection{Example: Commoners Must Roll 20}
+\subsubsection{Example: Weakest must roll 19}
 
-We consider again the 100 unarmored commoners example
-with $H = 100$, $P = 2$, and $S = 20$.
-We want them to have a 5\% chance to hit
-(i.e., roll over 19).
-We solve:
+We consider a battle involving 100 unarmored commoners and 20 orcs,
+where $P = 2$.
+The attack--defend ratio for the commoners is
+\[
+    \frac
+        {2.5 (10 + 2)^P}
+        {4.5 (10)^P}
+    =
+    0.8
+\]
+whereas for the orcs the ratio (for javelins) is
+\[
+    \frac
+        {6.5 (10 + 5)^P}
+        {15 (13)^P}
+    \approx
+    0.577
+\]
+
+As orcs have a lesser ratio, their accuracy will be set at 10\% (rolling over 18).
+With $H = 100$, $P = 2$, and $S = 20$,
+we solve:
 \begin{alignat*}{2}
     A &= 
         \frac
-            {(2.5) (10 + 2)^2 (100) (20)}
-            {(4.5) (10)^2 (20 - 19)}
-        &{}= 1600
+            {(6.5) (10 + 2)^2 (100) (20)}
+            {(15) (13)^2 (20 - 18)}
+        &{}\approx 369
 \end{alignat*}
 
+By definition, the orcs' javelin attack now has a roll target of 18.
+Their greataxe attack is more likely to deal damage,
+and therefore has a lower roll target:
+\begin{alignat*}{2}
+    t_g &=
+        20 -
+        \left\lceil
+            \frac
+                {(9.5) (10 + 5)^2 (100) (20)}
+                {(15) (13)^2 (369)}
+        \right\rceil
+            &= 15
+\end{alignat*}
+
+Finally, the commoners have the following roll target
+for their club attack.
+\begin{alignat*}{2}
+    t_c &=
+        20 -
+        \left\lceil
+            \frac
+                {(2.5) (10 + 2)^2 (100) (20)}
+                {(4.5) (10)^2 (369)}
+        \right\rceil
+            &= 15
+\end{alignat*}
+
+As the size of the respective units and the $P$ and $H$ values
+are unchanged from Section~\ref{sec:examples},
+the $n$ values calculated for each unit is unchanged.
+The roll for the orc unit's greataxe attack is then $\nicefrac{6}{15}$,
+whereas for the commoner unit's club attack, it is $\nicefrac{5}{15}$.
+
+\subsection{Alternative Hit Chance}
+
+Similar calculations may be performed to calculate an $A$ value
+such that the maximum hit chance, average hit chance, etc.
+is equal to some value.
+
+\subsection{The $S$ Parameter}
+The $S$ parameter is generally set to 20 in this document,
+as it balances granularity and simplicity,
+and is familiar to d20 system users.
+It is possible, however, that greater granularity is needed.
+This might arise in cases where,
+after calculating an appropriate $A$ value,
+one or more battle participants needs only to roll 1 to hit,
+(i.e., will always hit),
+or otherwise if participants whose strength ought to be different
+identical statistics.
+
+These issues may be addressed by increasing the $S$ parameter to 100,
+for example.
+However, they may instead point to an issue that some unit
+is so weak as to be in ineffectual and might be disregarded for the battle.
+
+\section{Case Studies}
+
+\section{Rules Summary}
 \end{document}
