@@ -30,6 +30,11 @@ def t(attack: Attack, creature: Creature, params: Parameters) -> int:
     denom = creature.health * creature.ac ** params.P * params.A
     return 20 - ceil(num / denom)
 
+def ratio(attack: Attack, creature: Creature, P: float) -> float:
+    num = attack.damage * (10 + attack.bonus) ** P
+    denom = creature.health * creature.ac ** P
+    return num / denom
+
 commoner_club = Attack(2, 2.5)
 commoner = Creature(4.5, 10, [commoner_club])
 commoner_100 = Unit(commoner, 100)
