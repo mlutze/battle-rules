@@ -3,6 +3,7 @@
 \usepackage{enumitem}
 \usepackage{amsmath}
 \usepackage{todonotes}
+\usepackage{units}
 
 \setlist[itemize]{noitemsep} 
 \setlist[enumerate]{noitemsep} 
@@ -55,6 +56,7 @@ in turn affecting the duration of the battle.
     \item $A$ (attack scalar) -- roughly indicates how much damage is required to reduce a unit's health by one point
     \item $H$ (health scalar) -- indicates how many points of creature health (without armor) are equal to one point of unit health
     \item $P$ (accuracy exponent) -- indicates the compounding force of accuracy
+    \item $S$ (the size of the die) -- the die to be rolled to determine if attacks hit
 \end{itemize}
 
 Provided they are ascribed valid values,
@@ -65,7 +67,8 @@ The valid ranges for the parameters are the following:
 \begin{align*}
     A > 0 \\
     H > 0 \\
-    P \geq 0
+    P \geq 0 \\
+    S > 0
 \end{align*}
 Section~\ref{sec:params} contains further guidance on selecting values for the parameters.
 
@@ -93,23 +96,27 @@ as well as the unit size.
 There are two output values.
 The number of dice is an aggregation of a unit's defensive strength and number.
 It is used as a set of hitpoints during combat.
-The size of the die is an aggregation
+The roll target is an aggregation
 of a unit's offensive strength and accuracy \emph{per die}.
 Regardless of unit size,
-two units of the same type will always use the same die size
+two units of creatures with the same statistics
+will always have the same roll target
 (but may use a different number of dice).
-Smaller die size is stronger,
-as the goal is to roll a 1,
+A lower roll target is stronger,
+as the goal is to roll above the target,
 resulting in reducing the opponent's number of dice by 1.
 
 \begin{itemize}
     \item $n$ (number of dice) -- the number of dice to use for attacks
-    \item $s_a$ (die size) -- the size of the die to use for attack $a$
+    \item $t_a$ (roll target) -- the number to roll above in order to succeed with attack $a$
 \end{itemize}
+
+The combination of the two statistics is written $\nicefrac{n}{t_a}$
+and read ``$n$ over $t_a$''.
 
 \subsection{Calculations}
 
-The $n$ and $s$ values are calculated according to the following formulas:
+The $n$ and $t_a$ values are calculated according to the following formulas:
 
 \begin{align*}
     n   &=  
@@ -118,11 +125,12 @@ The $n$ and $s$ values are calculated according to the following formulas:
                 {h u r^P}
                 {10^P H}
         \right\rceil \\
-    s_a &=
+    t_a &=
+        20 -
         \left\lceil
             \frac
+                {d_a (10 + b_{a})^P H S}
                 {h r^P A}
-                {d_a (10 + b_{a})^P H}
         \right\rceil
 \end{align*}
 
@@ -150,7 +158,7 @@ but from two: the attacker's attack bonus and the defender's AC.
 Modelling this directly would present a problem for the transformation,
 as it would necessitate an additional statistic and comparison during gameplay.
 Instead, we try to bundle the effect of AC the $n$,
-and the effect of attack bonus into $s_a$.
+and the effect of attack bonus into $t_a$.
 
 It is not possible to replicate the effect of accuracy fully, however.
 To demonstrate, we turn to an example of a commonner (+2 attack bonus)
@@ -158,7 +166,7 @@ attacking a tarrasque (25 AC).
 Barring critical hits, the commoner will never be able to hit the tarrasque,
 as the maximum roll of 22 is less than the tarrasque's AC.
 The result is that the $n$ value for a tarrasque unit must be infinite,
-or that the $s_a$ value for a commoner unit must be infinite.
+or that the $t_a$ value for a commoner unit must be at least 20.
 
 Clearly, neither of these options is practical.
 Instead of modelling the asymptotic effect of AC and attack bonus directly,
@@ -190,7 +198,7 @@ divided by the $H$ parameter:
 \]
 We round and simplify to get our value for $n$.
 
-The $s_a$ formula is more complex,
+The $t$ formula is more complex,
 as it must take into account both attacking strength and defensive strength.
 Because $n$ dice (proportional to defense) will be rolled,
 in order to avoid a compounding impact of defense,
@@ -232,12 +240,14 @@ We scale it to a probability by dividing by $A$:
         {h r^P A}
 \]
 We now have our true hit chance.
-To turn this into a die, we take the reciprocal and round up.
+To turn this into a target roll,
+we multiply by $S$, round up, and subtract from $S$
 \[
+    S -
     \left\lceil
         \frac
+            {d_a (10 + b_{a})^P H S}
             {h r^P A}
-            {d_a (10 + b_{a})^P H}
     \right\rceil
 \]
 
@@ -263,31 +273,37 @@ An orc has the following relevant statistics:
         \end{itemize}
 \end{itemize}
 
-For 20 orcs, given $A = 500$, $H = 100$, and $P = 2$
+For 20 orcs, given $A = 100$, $H = 100$, $P = 2$, and $S = 20$
 \begin{alignat*}{2}
-    n   =&  
+    n   &=  
         \left\lceil
             \frac
-                {(15) (20) (13^2)}
-                {(10^2) (100)}
+                {(15) (20) (13)^2}
+                {(10)^2 100}
         \right\rceil
             &=  6
     \\
-    s_a =&
+    t_a &=
+        20 -
         \left\lceil
             \frac
-                {(15) (13^2) (500)}
-                {(6.5) (10 + 5)^2 (100)}
+                {(6.5) (10 + 5)^2 (100) (20)}
+                {(15) (13)^2 (100)}
         \right\rceil
-            &=   26 \\
-    s_g =&  
+            &=   8
+    \\
+    t_g &=  
+        20 -
         \left\lceil
             \frac
-                {(15) (13^2) (500)}
-                {(9.5) (10 + 5)^2 (100)}
+                {(6.5) (10 + 5)^2 (100) (20)}
+                {(15) (13)^2 (100)}
         \right\rceil
-            &=  18
+            &=  3
 \end{alignat*}
+
+A 20-orc unit then has 6 hit points, and its attacks are
+$\nicefrac{6}{8}$ and $\nicefrac{6}{3}$.
 
 \subsubsection{Armored vs Unarmored Commoners}
 
@@ -305,7 +321,7 @@ A commoner has the following relevant statistics:
 \end{itemize}
 
 
-For 100 commoners, given $A = 500$, $H = 100$, and $P = 2$
+For 100 commoners, given $A = 100$, $H = 100$, $P = 2$, $S = 20$
 
 \begin{alignat*}{2}
     n   &=  
@@ -316,13 +332,14 @@ For 100 commoners, given $A = 500$, $H = 100$, and $P = 2$
         \right\rceil
             &= 5
     \\
-    s_c &=
+    t_c &=
+        20 -
         \left\lceil
             \frac
-                {(4.5) (10^2) (500)}
-                {(2.5) (10 + 2)^P (100)}
+                {(2.5) (10 + 2)^2 (100) (20)}
+                {(4.5) (10)^2 (100)}
         \right\rceil
-            &= 7
+            &= 4
 \end{alignat*}
 
 Equipped with chain shirts, the commoners' AC rises to 13.
@@ -337,13 +354,14 @@ This affects their statistics as follows:
         \right\rceil
             &= 8
     \\
-    s_c &=
+    t_c &=
+        20 - 
         \left\lceil
             \frac
-                {(4.5) (13^2) (500)}
-                {(2.5) (10 + 2)^P (100)}
+                {(2.5) (10 + 2)^2 (100) (20)}
+                {(4.5) (13)^2 (100)}
         \right\rceil
-            &= 11
+            &= 10
 \end{alignat*}
 
 Note that while the armored commoners have more dice,
@@ -352,10 +370,12 @@ their larger die size causes each individual die less likely to land a hit.
 As the units have the same size and weapons,
 their ought to have the same attacking power.
 Confirming the validity of the conversion,
-the expected damage of each unit is the same,
-within a rounding error:
-$\frac{5}{7} \approx 71\%$ for the unarmored commoners,
-and $\frac{8}{11} \approx 73\%$ for the armored commoners.
+the expected damage of each unit is the same:
+$5(\frac{16}{20}) = 4$ for the unarmored commoners,
+and $8(\frac{10}{20}) = 4$ for the armored commoners.
+In this case, the expected damage is exactly equal,
+but in general the damage will only be approximately equal,
+due to the natural lack of granularity of die rolls.
 
 \section{Gameplay}\label{sec:game}
 \missingfigure{diagram of play}
@@ -371,49 +391,60 @@ The $P$ parameter is the most nebulous of the parameters,
 as it doesn't correspond to any real statistic.
 The current recommendation is to assign it a value of 2.
 
-\subsection{Max Hit Chance}
+\subsection{Minimum Hit Chance}
+
+\todo[inline]{this actually needs to consider the minimum attack/health ratio
+since more health leads to lower hit chance}
 
 One may select the maximum hit chance that they would like to see in the game.
-For example, one may decide that the strongest unit should always hit (i.e., roll a d1)
-or have a 50\% chance of hitting (i.e., roll a d2).
-Taking all units into account and a given $H$ value and $P$ value,
-an $A$ value is selected such that the strongest unit will roll the selected die.
+For example, one may decide that the weakest unit should have a minimal chance of hitting
+(i.e. require a maximal die roll to hit).
+Taking all units into account and a given $H$ value, $P$ value, and $S$ value,
+an $A$ value is selected such that the weakest unit will need to roll $S$ to hit.
 
-We now effectively have a new parameter $S$, representing the die of the strongest attack.
+We now effectively have a new parameter $M$, representing the target roll.
 We can then reverse the die formula to derive a formula for $A$:
 \[
-    S =
+    M =
+        S -
         \left\lceil
             \frac
+                {d_a (10 + b_{a})^P H S}
                 {h r^P A}
-                {d_a (10 + b_{a})^P H}
         \right\rceil
 \]
-After removing rounding, we can rearrange the formula to derive $A$:
+\[
+    \iff
+\]
+\[
+    S - M =
+        \left\lceil
+            \frac
+                {d_a (10 + b_{a})^P H S}
+                {h r^P A}
+        \right\rceil
+\]
+we remove rounding and rearrange to get
 \[
     A = 
         \frac
             {d_a (10 + b_{a})^P H S}
-            {h r^P}
+            {h r^P (S - M)}
 \]
 
-This strategy guarantees a certain hit chance and clearly delineates a strongest unit.
-It must be noted, however, that if a small die size $S$ is chosen,
-then the unit with the second-strongest attack will be at an otherwise great disadvantage,
-as their die size will be rounded to at least $n + 1$.
+\subsubsection{Example: Commoners Must Roll 20}
 
-
-\subsubsection{Example: Orcs Roll d2}
-
-We consider again the 20 orcs example with $H = 100$ and $P = 2$.
-We want them to have a 50\% chance to hit.
+We consider again the 100 unarmored commoners example
+with $H = 100$, $P = 2$, and $S = 20$.
+We want them to have a 5\% chance to hit
+(i.e., roll over 19).
 We solve:
 \begin{alignat*}{2}
     A &= 
         \frac
-            {(9.5) (10 + 5)^2 (100) (2)}
-            {(15) (13)^2}
-        &{}\approx{} 168.63
+            {(2.5) (10 + 2)^2 (100) (20)}
+            {(4.5) (10)^2 (20 - 19)}
+        &{}= 1600
 \end{alignat*}
 
 \end{document}
