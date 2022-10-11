@@ -155,13 +155,13 @@ the defender would need around 4 hitpoints to last 8 rounds.
 
 Accuracy of attacks in standard D\&D is not derived from one statistic,
 but from two: the attacker's attack bonus and the defender's AC.
-Modelling this directly would present a problem for the transformation,
+Modeling this directly would present a problem for the transformation,
 as it would necessitate an additional statistic and comparison during gameplay.
 Instead, we try to bundle the effect of AC the $n$,
 and the effect of attack bonus into $t_a$.
 
 It is not possible to replicate the effect of accuracy fully, however.
-To demonstrate, we turn to an example of a commonner (+2 attack bonus)
+To demonstrate, we turn to an example of a commoner (+2 attack bonus)
 attacking a tarrasque (25 AC).
 Barring critical hits, the commoner will never be able to hit the tarrasque,
 as the maximum roll of 22 is less than the tarrasque's AC.
@@ -169,9 +169,9 @@ The result is that the $n$ value for a tarrasque unit must be infinite,
 or that the $t_a$ value for a commoner unit must be at least 20.
 
 Clearly, neither of these options is practical.
-Instead of modelling the asymptotic effect of AC and attack bonus directly,
+Instead of modeling the asymptotic effect of AC and attack bonus directly,
 we use power function to approximate it.
-AC is converted into a defence factor:
+AC is converted into a defense factor:
 \[
     \left(\frac{r}{10}\right)^P
 \]
@@ -399,7 +399,7 @@ that the unit with the least accurate attack (per die)
 should only hit with the minimal frequency allowed by the system
 (i.e. require a maximal die roll to hit).
 This unit is not necessarily the weakest unit,
-but rather the unit whose attacking strenth (of its weakest attack)
+but rather the unit whose attacking strength (of its weakest attack)
 is most significantly weaker than
 its defending strength.
 
