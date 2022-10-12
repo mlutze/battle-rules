@@ -11,6 +11,11 @@ class Creature(NamedTuple):
     health: float
     ac: int
     attacks: list[Attack]
+
+    def add_attack(self, bonus: int, damage: float) -> Attack:
+        attack = Attack(bonus, damage, self)
+        self.attacks.append(attack)
+        return attack 
 class Unit(NamedTuple):
     creature: Creature
     size: int
@@ -44,21 +49,18 @@ def pickAByMaxHit(units: list[Unit], P: float, H: float, S: float, M: int) -> fl
     return num / denom
 
 commoner = Creature(4.5, 10, [])
-commoner_club = Attack(2, 2.5, commoner)
-commoner.attacks.append(commoner_club)
+commoner_club = commoner.add_attack(2, 2.5)
 commoner_100 = Unit(commoner, 100)
 commoner_30 = Unit(commoner, 30)
 
 armored_commoner = Creature(4.5, 13, [])
-armored_commoner_club = Attack(2, 2.5, armored_commoner)
-armored_commoner.attacks.append(armored_commoner_club)
+armored_commoner_club = armored_commoner.add_attack(2, 2.5)
 armored_commoner_100 = Unit(armored_commoner, 100)
 
 orc = Creature(15, 13, [])
-orc_javelin = Attack(5, 6.5, orc)
-orc_greataxe = Attack(5, 9.5, orc)
-orc_mallet = Attack(10, 30, orc)
-orc.attacks.extend([orc_javelin, orc_greataxe, orc_mallet])
+orc_javelin = orc.add_attack(5, 6.5)
+orc_greataxe = orc.add_attack(5, 9.5)
+orc_mallet = orc.add_attack(10, 30)
 orc_20 = Unit(orc, 20)
 orc_6 = Unit(orc, 6)
 orc_30 = Unit(orc, 30)
