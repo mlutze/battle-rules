@@ -1,15 +1,16 @@
 from math import ceil
 from typing import NamedTuple
+from itertools import chain
 
 class Attack(NamedTuple):
     bonus: int
     damage: float
+    creature: "Creature"
 
 class Creature(NamedTuple):
     health: float
     ac: int
     attacks: list[Attack]
-
 class Unit(NamedTuple):
     creature: Creature
     size: int
@@ -25,34 +26,61 @@ def n(unit: Unit, params: Parameters) -> int:
     denom = 10 ** params.P * params.H
     return ceil(num / denom)
 
-def t(attack: Attack, creature: Creature, params: Parameters) -> int:
+def t(attack: Attack, params: Parameters) -> int:
     num = attack.damage * (10 + attack.bonus) ** params.P * params.H * params.S
-    denom = creature.health * creature.ac ** params.P * params.A
+    denom = attack.creature.health * attack.creature.ac ** params.P * params.A
     return 20 - ceil(num / denom)
 
-def ratio(attack: Attack, creature: Creature, P: float) -> float:
+def ratio(attack: Attack, P: float) -> float:
     num = attack.damage * (10 + attack.bonus) ** P
-    denom = creature.health * creature.ac ** P
+    denom = attack.creature.health * attack.creature.ac ** P
     return num / denom
 
-commoner_club = Attack(2, 2.5)
-commoner = Creature(4.5, 10, [commoner_club])
-commoner_100 = Unit(commoner, 100)
+def pickAByMaxHit(units: list[Unit], P: float, H: float, S: float, M: int) -> float:
+    attacks = chain.from_iterable(unit.creature.attacks for unit in units)
+    max_attack: Attack = max(attacks, key=lambda a: ratio(a, P))
+    num = max_attack.damage * (10 + max_attack.bonus) ** P * H * S
+    denom = max_attack.creature.health * max_attack.creature.ac ** P * (S - M)
+    return num / denom
 
-armored_commoner = Creature(4.5, 13, [commoner_club])
+commoner = Creature(4.5, 10, [])
+commoner_club = Attack(2, 2.5, commoner)
+commoner.attacks.append(commoner_club)
+commoner_100 = Unit(commoner, 100)
+commoner_30 = Unit(commoner, 30)
+
+armored_commoner = Creature(4.5, 13, [])
+armored_commoner_club = Attack(2, 2.5, armored_commoner)
+armored_commoner.attacks.append(armored_commoner_club)
 armored_commoner_100 = Unit(armored_commoner, 100)
 
-orc_javelin = Attack(5, 6.5)
-orc_greataxe = Attack(5, 9.5)
-orc = Creature(15, 13, [orc_javelin, orc_greataxe])
+orc = Creature(15, 13, [])
+orc_javelin = Attack(5, 6.5, orc)
+orc_greataxe = Attack(5, 9.5, orc)
+orc_mallet = Attack(10, 30, orc)
+orc.attacks.extend([orc_javelin, orc_greataxe, orc_mallet])
 orc_20 = Unit(orc, 20)
+orc_6 = Unit(orc, 6)
+orc_30 = Unit(orc, 30)
 
-print(n(commoner_100, Parameters(P = 2, A = 100, H = 100, S = 20)))
-print(t(commoner_club, commoner, Parameters(P = 2, A = 100, H = 100, S = 20)))
+P = 2
+H = 30
+S = 20
+M = 1
 
-print(n(armored_commoner_100, Parameters(P = 2, A = 100, H = 100, S = 20)))
-print(t(commoner_club, armored_commoner, Parameters(P = 2, A = 100, H = 100, S = 20)))
+A = pickAByMaxHit([orc_30, commoner_30], P = P, H = H, S = S, M = M)
+params = Parameters(P = P, A = A, H = H, S = S)
+print(params)
+print("=" * 79)
+print("Orc: ")
+n_orc = n(orc_30, params)
+for attack in orc.attacks:
+    t_orc = t(attack, params)
+    print(f"{n_orc}/{t_orc}")
+print("=" * 79)
+print("Commoner: ")
+n_comm = n(commoner_30, params)
+for attack in commoner.attacks:
+    t_comm = t(attack, params)
+    print(f"{n_comm}/{t_comm}")
 
-print(n(orc_20, Parameters(P = 2, A = 100, H = 100, S = 20)))
-print(t(orc_javelin, orc, Parameters(P = 2, A = 100, H = 100, S = 20)))
-print(t(orc_greataxe, orc, Parameters(P = 2, A = 100, H = 100, S = 20)))
