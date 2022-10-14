@@ -15,3 +15,13 @@ tarrasque.add_attack("Bite", 19, 36)
 tarrasque.add_attack("Claw", 19, 28)
 tarrasque.add_attack("Horns", 19, 32)
 tarrasque.add_attack("Tail", 19, 24)
+
+frog = Creature("Frog", 1.5, 11, {})
+
+knight = Creature("Knight", 52, 18, {})
+knight.add_attack("Greatsword", 5, 10)
+knight.add_attack("Heavy Crossbow", 2, 5.5)
+
+bandit = Creature("Bandit", 11, 12)
+bandit.add_attack("Scimitar", 3, 4.5)
+bandit.add_attack("Light Crossbow", 3, 5.5)
