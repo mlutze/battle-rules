@@ -391,6 +391,29 @@ The $P$ parameter is the most nebulous of the parameters,
 as it doesn't correspond to any real statistic.
 The current recommendation is to assign it a value of 2.
 
+\subsection{The $H$ Parameter}
+
+The $H$ parameter represents the health of the units,
+and directly scales their number of dice, which act as hitpoints.
+
+\subsubsection{Minimum Dice}
+
+\todo[inline]{text}
+
+\[
+    n_* =  
+        \frac
+            {h u r^P}
+            {10^P H}
+\]
+
+\[
+    H =  
+        \frac
+            {h u r^P}
+            {10^P n_*}
+\]
+
 \subsection{Minimum Hit Chance}
 
 One may select the maximum hit chance that they would like to see in the game.
@@ -415,10 +438,10 @@ This is the formula for hit chance, without the common constants.
 Taking all units into account and a given $H$ value, $P$ value, and $S$ value,
 an $A$ value is selected such that this unit will need to roll $S$ to hit.
 
-We now effectively have a new parameter $M$, representing the target roll.
+We now effectively have a new parameter $t_*$, representing the target roll.
 We can then reverse the die formula to derive a formula for $A$:
 \[
-    M =
+    t_* =
         S -
         \left\lceil
             \frac
@@ -430,7 +453,7 @@ We can then reverse the die formula to derive a formula for $A$:
     \iff
 \]
 \[
-    S - M =
+    S - t_* =
         \left\lceil
             \frac
                 {d_a (10 + b_{a})^P H S}
@@ -442,7 +465,7 @@ we remove rounding and rearrange to get
     A = 
         \frac
             {d_a (10 + b_{a})^P H S}
-            {h r^P (S - M)}
+            {h r^P (S - t_*)}
 \]
 
 \subsubsection{Example: Weakest must roll 19}

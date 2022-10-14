@@ -5,7 +5,7 @@ from lib import *
 P = 2
 H = 100
 S = 20
-M = 1
+t = 1
 
 units = [
     orc * 30,
@@ -13,7 +13,7 @@ units = [
     tarrasque * 1
 ]
 
-A = pickAByMaxHit(units, P = P, H = H, S = S, M = M)
+A = pickAByMaxHit(units, P = P, H = H, S = S, t = t)
 params = Parameters(P = P, A = A, H = H, S = S)
 print(params)
 print()
