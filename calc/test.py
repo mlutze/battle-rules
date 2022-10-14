@@ -5,6 +5,7 @@ from lib import *
 P = 2
 H = 100
 S = 20
+n_star = 4
 t_star = 1
 
 units = [
@@ -13,7 +14,9 @@ units = [
     tarrasque * 1
 ]
 
+H = pickHByMinHealth(units, P = P, n_star = n_star)
 A = pickAByMaxHit(units, P = P, H = H, S = S, t_star = t_star)
+
 params = Parameters(P = P, A = A, H = H, S = S)
 print(params)
 print()
