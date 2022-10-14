@@ -1,19 +1,20 @@
 from typing import NamedTuple
 
 class Attack(NamedTuple):
+    name: str
     bonus: int
     damage: float
     creature: "Creature"
 
 class Creature(NamedTuple):
+    name: str
     health: float
     ac: int
-    attacks: list[Attack]
+    attacks: dict[str, Attack]
 
-    def add_attack(self, bonus: int, damage: float) -> Attack:
-        attack = Attack(bonus, damage, self)
-        self.attacks.append(attack)
-        return attack
+    def add_attack(self, name: str, bonus: int, damage: float) -> Attack:
+        attack = Attack(name, bonus, damage, self)
+        self.attacks[name] = attack
 
     def __mul__(self, size: int) -> "Unit":
         return Unit(self, size)

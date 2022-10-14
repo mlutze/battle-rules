@@ -18,7 +18,7 @@ def ratio(attack: Attack, P: float) -> float:
     return num / denom
 
 def pickAByMaxHit(units: list[Unit], P: float, H: float, S: float, M: int) -> float:
-    attacks = chain.from_iterable(unit.creature.attacks for unit in units)
+    attacks = chain.from_iterable(unit.creature.attacks.values() for unit in units)
     max_attack: Attack = max(attacks, key=lambda a: ratio(a, P))
     num = max_attack.damage * (10 + max_attack.bonus) ** P * H * S
     denom = max_attack.creature.health * max_attack.creature.ac ** P * (S - M)
