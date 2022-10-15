@@ -7,8 +7,8 @@ armored_commoner = Creature("Armored Commoner", 4.5, 13, {})
 armored_commoner.add_attack("Club", 2, 2.5)
 
 orc = Creature("Orc", 15, 13, {})
-orc.add_attack("Club", 5, 6.5)
-orc.add_attack("Club", 5, 9.5)
+orc.add_attack("Javelin", 5, 6.5)
+orc.add_attack("Greataxe", 5, 9.5)
 
 tarrasque = Creature("Tarrasque", 676, 25, {})
 tarrasque.add_attack("Bite", 19, 36)

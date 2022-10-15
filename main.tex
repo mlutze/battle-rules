@@ -120,14 +120,14 @@ The $n$ and $t_a$ values are calculated according to the following formulas:
 
 \begin{align*}
     n   &=  
-        \left\lceil
+        \left\lfloor
             \frac
                 {h u r^P}
                 {10^P H}
         \right\rceil \\
     t_a &=
         20 -
-        \left\lceil
+        \left\lfloor
             \frac
                 {d_a (10 + b_{a})^P H S}
                 {h r^P A}
@@ -241,10 +241,10 @@ We scale it to a probability by dividing by $A$:
 \]
 We now have our true hit chance.
 To turn this into a target roll,
-we multiply by $S$, round up, and subtract from $S$
+we multiply by $S$, round, and subtract from $S$
 \[
     S -
-    \left\lceil
+    \left\lfloor
         \frac
             {d_a (10 + b_{a})^P H S}
             {h r^P A}
@@ -276,16 +276,16 @@ An orc has the following relevant statistics:
 For 20 orcs, given $A = 100$, $H = 100$, $P = 2$, and $S = 20$
 \begin{alignat*}{2}
     n   &=  
-        \left\lceil
+        \left\lfloor
             \frac
                 {(15) (20) (13)^2}
                 {(10)^2 100}
         \right\rceil
-            &=  6
+            &=  5
     \\
     t_a &=
         20 -
-        \left\lceil
+        \left\lfloor
             \frac
                 {(6.5) (10 + 5)^2 (100) (20)}
                 {(15) (13)^2 (100)}
@@ -294,7 +294,7 @@ For 20 orcs, given $A = 100$, $H = 100$, $P = 2$, and $S = 20$
     \\
     t_g &=  
         20 -
-        \left\lceil
+        \left\lfloor
             \frac
                 {(6.5) (10 + 5)^2 (100) (20)}
                 {(15) (13)^2 (100)}
@@ -325,16 +325,16 @@ For 100 commoners, given $A = 100$, $H = 100$, $P = 2$, $S = 20$
 
 \begin{alignat*}{2}
     n   &=  
-        \left\lceil
+        \left\lfloor
             \frac
                 {(4.5) (100) (10^2)}
                 {(10^2) (100)}
         \right\rceil
-            &= 5
+            &= 4
     \\
     t_c &=
         20 -
-        \left\lceil
+        \left\lfloor
             \frac
                 {(2.5) (10 + 2)^2 (100) (20)}
                 {(4.5) (10)^2 (100)}
@@ -347,7 +347,7 @@ This affects their statistics as follows:
 
 \begin{alignat*}{2}
     n   &=  
-        \left\lceil
+        \left\lfloor
             \frac
                 {(4.5) (100) (13^2)}
                 {(10^2) (100)}
@@ -356,12 +356,12 @@ This affects their statistics as follows:
     \\
     t_c &=
         20 - 
-        \left\lceil
+        \left\lfloor
             \frac
                 {(2.5) (10 + 2)^2 (100) (20)}
                 {(4.5) (13)^2 (100)}
         \right\rceil
-            &= 10
+            &= 11
 \end{alignat*}
 
 Note that while the armored commoners have more dice,
@@ -370,12 +370,12 @@ their larger die size causes each individual die less likely to land a hit.
 As the units have the same size and weapons,
 their ought to have the same attacking power.
 Confirming the validity of the conversion,
-the expected damage of each unit is the same:
-$5(\frac{16}{20}) = 4$ for the unarmored commoners,
-and $8(\frac{10}{20}) = 4$ for the armored commoners.
-In this case, the expected damage is exactly equal,
-but in general the damage will only be approximately equal,
-due to the natural lack of granularity of die rolls.
+the expected damage of each unit is roughly equivalent:
+$4(\frac{16}{20}) = 3.2$ for the unarmored commoners,
+and $9(\frac{10}{20}) = 3.6$ for the armored commoners.
+The discrepancy lies in the choice of parameters;
+a larger choice of $S$ and smaller choice of $H$ and $A$
+would lead to a less significant difference in damage.
 
 \section{Gameplay}\label{sec:game}
 \missingfigure{diagram of play}
@@ -443,7 +443,7 @@ We can then reverse the die formula to derive a formula for $A$:
 \[
     t_* =
         S -
-        \left\lceil
+        \left\lfloor
             \frac
                 {d_a (10 + b_{a})^P H S}
                 {h r^P A}
@@ -454,7 +454,7 @@ We can then reverse the die formula to derive a formula for $A$:
 \]
 \[
     S - t_* =
-        \left\lceil
+        \left\lfloor
             \frac
                 {d_a (10 + b_{a})^P H S}
                 {h r^P A}
@@ -475,16 +475,16 @@ where $P = 2$.
 The attack--defend ratio for the commoners is
 \[
     \frac
-        {2.5 (10 + 2)^P}
-        {4.5 (10)^P}
+        {2.5 (10 + 2)^2}
+        {4.5 (10)^2}
     =
     0.8
 \]
 whereas for the orcs the ratio (for javelins) is
 \[
     \frac
-        {6.5 (10 + 5)^P}
-        {15 (13)^P}
+        {6.5 (10 + 5)^2}
+        {15 (13)^2}
     \approx
     0.577
 \]
@@ -495,9 +495,9 @@ we solve:
 \begin{alignat*}{2}
     A &= 
         \frac
-            {(6.5) (10 + 2)^2 (100) (20)}
+            {(6.5) (10 + 5)^2 (100) (20)}
             {(15) (13)^2 (20 - 18)}
-        &{}\approx 369
+        &{}\approx 577
 \end{alignat*}
 
 By definition, the orcs' javelin attack now has a roll target of 18.
@@ -506,12 +506,12 @@ and therefore has a lower roll target:
 \begin{alignat*}{2}
     t_g &=
         20 -
-        \left\lceil
+        \left\lfloor
             \frac
                 {(9.5) (10 + 5)^2 (100) (20)}
-                {(15) (13)^2 (369)}
+                {(15) (13)^2 (577)}
         \right\rceil
-            &= 15
+            &= 17
 \end{alignat*}
 
 Finally, the commoners have the following roll target
@@ -519,12 +519,12 @@ for their club attack.
 \begin{alignat*}{2}
     t_c &=
         20 -
-        \left\lceil
+        \left\lfloor
             \frac
                 {(2.5) (10 + 2)^2 (100) (20)}
-                {(4.5) (10)^2 (369)}
+                {(4.5) (10)^2 (577)}
         \right\rceil
-            &= 15
+            &= 17
 \end{alignat*}
 
 As the size of the respective units and the $P$ and $H$ values
