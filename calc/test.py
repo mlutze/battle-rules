@@ -15,7 +15,7 @@ units = [
 ]
 
 H = pickHByMinHealth(units, P = P, n_star = n_star)
-A = pickAByMaxHit(units, P = P, H = H, S = S, t_star = t_star)
+A = pickAByMinHurdle(units, P = P, H = H, S = S, t_star = t_star)
 
 params = Parameters(P = P, A = A, H = H, S = S)
 print(params)

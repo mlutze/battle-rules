@@ -20,14 +20,14 @@ def attack_ratio(attack: Attack, P: float) -> float:
     denom = attack.creature.health * attack.creature.ac ** P
     return num / denom
 
-def pickAByMaxHit(units: list[Unit], P: float, H: float, S: float, t_star: int) -> float:
+def pickAByMinHurdle(units: list[Unit], P: float, H: float, S: float, t_star: int) -> float:
     attacks = chain.from_iterable(unit.creature.attacks.values() for unit in units)
     max_attack: Attack = max(attacks, key=lambda a: attack_ratio(a, P))
     num = max_attack.damage * (10 + max_attack.bonus) ** P * H * S
     denom = max_attack.creature.health * max_attack.creature.ac ** P * (S - t_star)
     return num / denom
 
-def pickAByMinHit(units: list[Unit], P: float, H: float, S: float, t_star: int) -> float:
+def pickAByMaxHurdle(units: list[Unit], P: float, H: float, S: float, t_star: int) -> float:
     attacks = chain.from_iterable(unit.creature.attacks.values() for unit in units)
     min_attack: Attack = min(attacks, key=lambda a: attack_ratio(a, P))
     print(min_attack.damage)

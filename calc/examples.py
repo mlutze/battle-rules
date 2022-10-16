@@ -34,7 +34,7 @@ print("Commoner Ratio:", attack_ratio(commoner.attacks["Club"], P))
 print("Orc Ratio:", attack_ratio(orc.attacks["Greataxe"], P))
 H = 100
 S = 20
-A = pickAByMaxHit([commoner * 100, orc * 20], P = P, H = 100, S = 20, t_star = 2)
+A = pickAByMinHurdle([commoner * 100, orc * 20], P = P, H = 100, S = 20, t_star = 2)
 print("A:", A)
 params = Parameters(P = P, A = A, H = H, S = S)
 print("Orc")

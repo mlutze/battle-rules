@@ -398,15 +398,24 @@ and directly scales their number of dice, which act as hitpoints.
 
 \subsubsection{Minimum Dice}
 
-\todo[inline]{text}
+In order to ensure that each unit has a reasonable number of dice,
+it may be desirable to choose a value $n_*$
+such that every unit has at least $n_*$ dice.
 
+The unit with the least dice is that with the lowest health,
+calculated according to the health factor:
+\[
+    h u r^P
+\]
+From the statistics of the least-health unit, the formula for $H$
+can easily be derived using the normal $n$ formula.
 \[
     n_* =  
         \frac
             {h u r^P}
             {10^P H}
 \]
-
+can be rearranged to
 \[
     H =  
         \frac
@@ -414,10 +423,13 @@ and directly scales their number of dice, which act as hitpoints.
             {10^P n_*}
 \]
 
+\todo[inline]{example}
+
 \subsection{Minimum Hurdle}
 
 \todo[inline]{discuss fodder}
 \todo[inline]{must present ``hurdle'' earlier}
+\todo[inline]{sections should be "the $A$ parameter}
 
 One may select the minimum hurdle that they would like to see in the game.
 For example, one may decide
