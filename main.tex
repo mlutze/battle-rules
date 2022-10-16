@@ -414,21 +414,22 @@ and directly scales their number of dice, which act as hitpoints.
             {10^P n_*}
 \]
 
-\subsection{Minimum Hit Chance}
-\todo[inline]{change to maximum, discuss fodder, change to ``hurdle''}
+\subsection{Minimum Hurdle}
 
-One may select the maximum hit chance that they would like to see in the game.
+\todo[inline]{discuss fodder}
+\todo[inline]{must present ``hurdle'' earlier}
+
+One may select the minimum hurdle that they would like to see in the game.
 For example, one may decide
-that the unit with the least accurate attack (per die)
-should only hit with the minimal frequency allowed by the system
-(i.e. require a maximal die roll to hit).
-This unit is not necessarily the weakest unit,
-but rather the unit whose attacking strength (of its weakest attack)
-is most significantly weaker than
+that the unit with the most accurate attack (per die)
+should hit on anything but a 1.
+This unit is not necessarily the strongest unit,
+but rather the unit whose attacking strength (of its strongest attack)
+is most significantly stronger than
 its defending strength.
 
 We begin by identifying this unit.
-The unit with the lowest attack--defend ratio is the unit for which the following formula is minimal.
+The unit with the highest attack--defend ratio is the unit for which the following formula is maximal.
 \[
     \frac
         {d_a (10 + b_a)^P}
@@ -469,7 +470,7 @@ we remove rounding and rearrange to get
             {h r^P (S - t_*)}
 \]
 
-\subsubsection{Example: Weakest must roll 19}
+\subsubsection{Example: Strongest must roll 2}
 
 We consider a battle involving 100 unarmored commoners and 20 orcs,
 where $P = 2$.
@@ -481,38 +482,38 @@ The attack--defend ratio for the commoners is
     =
     0.8
 \]
-whereas for the orcs the ratio (for javelins) is
+whereas for the orcs the ratio (for greataxes) is
 \[
     \frac
-        {6.5 (10 + 5)^2}
+        {9.5 (10 + 5)^2}
         {15 (13)^2}
     \approx
-    0.577
+    0.843
 \]
 
-As orcs have a lesser ratio, their accuracy will be set at 10\% (rolling over 18).
+As orcs have a greater ratio, their accuracy will be set at 90\% (rolling over 2).
 With $H = 100$, $P = 2$, and $S = 20$,
 we solve:
 \begin{alignat*}{2}
     A &= 
         \frac
-            {(6.5) (10 + 5)^2 (100) (20)}
-            {(15) (13)^2 (20 - 18)}
-        &{}\approx 577
+            {(9.5) (10 + 5)^2 (100) (20)}
+            {(15) (13)^2 (20 - 2)}
+        &{}\approx 93.7
 \end{alignat*}
 
-By definition, the orcs' javelin attack now has a roll target of 18.
-Their greataxe attack is more likely to deal damage,
-and therefore has a lower roll target:
+By definition, the orcs' greataxe attack now has a roll hurdle of 2.
+Their javelin attack is less likely to deal damage,
+and therefore has a higher roll hurdle:
 \begin{alignat*}{2}
-    t_g &=
+    t_j &=
         20 -
         \left\lfloor
             \frac
                 {(9.5) (10 + 5)^2 (100) (20)}
-                {(15) (13)^2 (577)}
+                {(15) (13)^2 (93.7)}
         \right\rceil
-            &= 17
+            &= 8
 \end{alignat*}
 
 Finally, the commoners have the following roll target
@@ -523,9 +524,9 @@ for their club attack.
         \left\lfloor
             \frac
                 {(2.5) (10 + 2)^2 (100) (20)}
-                {(4.5) (10)^2 (577)}
+                {(4.5) (10)^2 (93.7)}
         \right\rceil
-            &= 17
+            &= 3
 \end{alignat*}
 
 As the size of the respective units and the $P$ and $H$ values
@@ -534,10 +535,10 @@ the $n$ values calculated for each unit is unchanged.
 The roll for the orc unit's greataxe attack is then $\nicefrac{6}{15}$,
 whereas for the commoner unit's club attack, it is $\nicefrac{5}{15}$.
 
-\subsection{Alternative Hit Chance}
+\subsection{Alternative Hurdle}
 
 Similar calculations may be performed to calculate an $A$ value
-such that the maximum hit chance, average hit chance, etc.
+such that the maximum hurdle, median hurdle, etc.
 is equal to some value.
 
 \subsection{The $S$ Parameter}

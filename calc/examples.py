@@ -28,14 +28,16 @@ print_stats(armored_commoner * 100, params)
 
 print("=" * 80)
 
-print("Weakest must roll 19")
+print("Strongest Must Roll 2")
 P = 2
-print(attack_ratio(commoner.attacks["Club"], P))
-print(attack_ratio(orc.attacks["Javelin"], P))
+print("Commoner Ratio:", attack_ratio(commoner.attacks["Club"], P))
+print("Orc Ratio:", attack_ratio(orc.attacks["Greataxe"], P))
 H = 100
 S = 20
-A = pickAByMinHit([commoner * 100, orc * 20], P = P, H = 100, S = 20, t_star = 18)
-print(A)
+A = pickAByMaxHit([commoner * 100, orc * 20], P = P, H = 100, S = 20, t_star = 2)
+print("A:", A)
 params = Parameters(P = P, A = A, H = H, S = S)
+print("Orc")
 print_stats(orc * 20, params)
-print_stats(commoner * 20, params)
+print("Commoner")
+print_stats(commoner * 100, params)
