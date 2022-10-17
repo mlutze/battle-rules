@@ -430,10 +430,18 @@ can be rearranged to
 
 \todo[inline]{example}
 
-\subsection{Minimum Hurdle}
+\subsection{The $A$ Parameter}
 
-\todo[inline]{discuss fodder}
-\todo[inline]{sections should be "the $A$ parameter}
+The $A$ parameter defines a ``standard'' amount of damage:
+the amount of damage a unit must do to reduce an opponent's dice by one.
+A low $A$ value can speed up combat,
+and may reduce the relative strength of the strongest units;
+as hit chance cannot exceed 100\%.
+A high $A$ value can slow down combat,
+and may leave the weakest units with no chance to hit.
+(Units that cannot hit are referred to as \emph{fodder}.)
+
+\subsubsection{Minimum Hurdle}
 
 One may select the minimum hurdle that they would like to see in the game.
 For example, one may decide
@@ -486,7 +494,7 @@ we remove rounding and rearrange to get
             {h r^P (S - t_*)}
 \]
 
-\subsubsection{Example: Strongest must roll 2}
+\subsubsection{Example: Strongest must roll over 2}
 
 We consider a battle involving 100 unarmored commoners and 20 orcs,
 where $P = 2$.
@@ -551,7 +559,7 @@ the $n$ values calculated for each unit is unchanged.
 The roll for the orc unit's greataxe attack is then $\nicefrac{6}{15}$,
 whereas for the commoner unit's club attack, it is $\nicefrac{5}{15}$.
 
-\subsection{Alternative Hurdle}
+\subsubsection{Alternative Hurdle}
 
 Similar calculations may be performed to calculate an $A$ value
 such that the maximum hurdle, median hurdle, etc.
