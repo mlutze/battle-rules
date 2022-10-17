@@ -96,7 +96,12 @@ as well as the unit size.
 There are two output values.
 The number of dice is an aggregation of a unit's defensive strength and number.
 It is used as a set of hitpoints during combat.
-The roll target is an aggregation
+The roll target (or \emph{hurdle})\footnote{
+    The term \emph{hurdle} is used to emphasize
+    that the roll must be \emph{above} the given value to succeed,
+    rather than meeting it.
+}
+is an aggregation
 of a unit's offensive strength and accuracy \emph{per die}.
 Regardless of unit size,
 two units of creatures with the same statistics
@@ -108,7 +113,7 @@ resulting in reducing the opponent's number of dice by 1.
 
 \begin{itemize}
     \item $n$ (number of dice) -- the number of dice to use for attacks
-    \item $t_a$ (roll target) -- the number to roll above in order to succeed with attack $a$
+    \item $t_a$ (target/hurdle) -- the number to roll above in order to succeed with attack $a$
 \end{itemize}
 
 The combination of the two statistics is written $\nicefrac{n}{t_a}$
@@ -428,7 +433,6 @@ can be rearranged to
 \subsection{Minimum Hurdle}
 
 \todo[inline]{discuss fodder}
-\todo[inline]{must present ``hurdle'' earlier}
 \todo[inline]{sections should be "the $A$ parameter}
 
 One may select the minimum hurdle that they would like to see in the game.
