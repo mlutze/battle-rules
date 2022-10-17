@@ -1,17 +1,18 @@
 from calc import *
 from models import *
 from lib import *
+from sim import *
 
 P = 2
 H = 100
 S = 20
-n_star = 4
-t_star = 1
+n_star = 100
+t_star = 10
 
 units = [
+    commoner * 200, 
     orc * 30,
-    commoner * 30,
-    tarrasque * 1
+    # tarrasque * 1
 ]
 
 H = pickHByMinHealth(units, P = P, n_star = n_star)
@@ -28,3 +29,14 @@ for unit in units:
         t_value = t(attack, params)
         print(f"{name}: {n_value}/{t_value}")
     print()
+
+
+one_win = 0
+for i in range(50):
+    if sim_1v1(*units, params) == 1:
+        one_win += 1
+for i in range(50):
+    if sim_1v1(*reversed(units), params) == 2:
+        one_win += 1
+
+print(f"{units[0].creature.name} won {one_win}% of battles.")
