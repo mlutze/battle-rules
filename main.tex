@@ -444,6 +444,47 @@ A high $A$ value can slow down combat,
 and may leave the weakest units with no chance to hit.
 (Units that cannot hit are referred to as \emph{fodder}.)
 
+\subsubsection{Median Damage}
+
+Having already determined the $H$ parameter and
+therefore the number of dice of each unit,
+may be useful to select $A$ by the average damage of an attack.\footnote{
+    Note that the maximum and minimum damage of an attack
+    are already determined by the number of dice of each unit,
+    as the most damage on unit can do is equal to its health.
+}
+
+We begin by identifying the median attack,
+according to the attack-defend ratio calculated by the following formula.
+\[
+    \frac
+        {n d_a (10 + b_a)^P}
+        {h r^P}
+\]
+With the median attack in hand,
+we can use the unit's statistics to derive an appropriate $A$ value
+such that this attack is most likely to deal our target average damage, $x_*$.
+Recall the previously introduced hit chance formula:
+\[
+    p = \frac
+        {d_a (10 + b_a)^P H}
+        {h r^P A}
+\]
+We want to choose a value $A$ such that $x_* = n p$:
+\[
+    x_* = \frac
+        {n d_a (10 + b_a)^P, H}
+        {h r^P A}
+\]
+We rearrange to get the formula:
+\[
+    A = \frac
+        {n d_a (10 + b_a)^P, H}
+        {h r^P x_*}
+\]
+
+\todo[inline]{remove minimum hurdle stuff and clean up}
+
 \subsubsection{Minimum Hurdle}
 
 One may select the minimum hurdle that they would like to see in the game.

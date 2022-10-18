@@ -1,10 +1,13 @@
 from itertools import chain
-from re import A
 from models import *
 
-def n(unit: Unit, params: Parameters) -> int:
-    num = unit.creature.health * unit.size * unit.creature.ac ** params.P
-    denom = 10 ** params.P * params.H
+def median(l: list, key):
+    l = sorted(l, key = key)
+    return l[len(l) // 2]
+
+def n(unit: Unit, P: float, H: float) -> int:
+    num = unit.creature.health * unit.size * unit.creature.ac ** P
+    denom = 10 ** P * H
     return round(num / denom)
 
 def t(attack: Attack, params: Parameters) -> int:
@@ -30,12 +33,18 @@ def pickAByMinHurdle(units: list[Unit], P: float, H: float, S: float, t_star: in
 def pickAByMaxHurdle(units: list[Unit], P: float, H: float, S: float, t_star: int) -> float:
     attacks = chain.from_iterable(unit.creature.attacks.values() for unit in units)
     min_attack: Attack = min(attacks, key=lambda a: attack_ratio(a, P))
-    print(min_attack.damage)
-    print(10 + min_attack.bonus)
-    print(H)
-    print(S)
     num = min_attack.damage * (10 + min_attack.bonus) ** P * H * S
     denom = min_attack.creature.health * min_attack.creature.ac ** P * (S - t_star)
+    return num / denom
+
+# TODO maybe change to max attack of each unit
+def pickAByAvgDamage(units: list[Unit], P: float, H: float, x_star: int) -> float:
+    attacks = chain.from_iterable([(unit, attack) for attack in unit.creature.attacks.values()] for unit in units)
+    avg_attack: Attack = median(attacks, key=lambda a: n(a[0], P = P, H = H) * attack_ratio(a[1], P))
+    unit: Unit = avg_attack[0]
+    attack: Attack = avg_attack[1]
+    num =  n(unit, P = P, H = H) * attack.damage * (10 + attack.bonus) ** P * H
+    denom = attack.creature.health * attack.creature.ac ** P * x_star
     return num / denom
 
 def health_factor(unit: Unit, P: float) -> float:

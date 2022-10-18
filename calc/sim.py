@@ -3,8 +3,8 @@ from lib import *
 from random import randint
 
 def sim_1v1(unit1: Unit, unit2: Unit, params: Parameters) -> None:
-    n1 = n(unit1, params)
-    n2 = n(unit2, params)
+    n1 = n(unit1, H = params.H, P = params.P)
+    n2 = n(unit2, H = params.H, P = params.P)
     t1 = min(t(attack, params) for _, attack in unit1.creature.attacks.items())
     t2 = min(t(attack, params) for _, attack in unit2.creature.attacks.items())
 
