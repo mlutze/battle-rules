@@ -10,9 +10,14 @@ t_star = 30
 x_star = n_star / 4
 
 units = [
-    commoner * 100, 
-    orc * 30,
-    # tarrasque * 1
+    kobold * 300, 
+    bandit * 70,
+    bandit * 70,
+    bandit * 70,
+    dryad * 150,
+    armored_commoner * 200,
+    orc * 200,
+    commoner * 200
 ]
 
 H = pickHByMinHealth(units, P = P, n_star = n_star)
@@ -30,14 +35,3 @@ for unit in units:
         t_value = t(attack, params)
         print(f"{name}: {n_value}/{t_value}")
     print()
-
-
-one_win = 0
-for i in range(50):
-    if sim_1v1(*units, params) == 1:
-        one_win += 1
-for i in range(50):
-    if sim_1v1(*reversed(units), params) == 2:
-        one_win += 1
-
-print(f"{units[0].creature.name} won {one_win}% of battles.")
