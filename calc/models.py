@@ -1,4 +1,13 @@
 from typing import NamedTuple
+from enum import Enum
+
+class Size(Enum):
+    Tiny = 2.5
+    Small = 5
+    Medium = 5
+    Large = 10
+    Huge = 15
+    Gargantuan = 20
 
 class Attack(NamedTuple):
     name: str
@@ -8,6 +17,7 @@ class Attack(NamedTuple):
 
 class Creature(NamedTuple):
     name: str
+    size: Size
     health: float
     ac: int
     attacks: dict[str, Attack]
