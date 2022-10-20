@@ -1,4 +1,5 @@
 from itertools import chain
+from math import sqrt
 from models import *
 
 def median(l: list, key):
@@ -60,4 +61,10 @@ def pickHByMinHealth(units: list[Unit], P: float, n_star: int) -> float:
     min_unit = min(units, key=lambda u: health_factor(u, P))
     num = min_unit.creature.health * min_unit.size * min_unit.creature.ac ** P
     denom = 10 ** P * n_star
+    return num / denom
+
+def pickFByAvgSurfaceAreaRatio(units: list[Unit]) -> float:
+    avg_unit = median(units, lambda u: u.size)
+    num = avg_unit.size - (sqrt(avg_unit.size) - 2) ** 2
+    denom = avg_unit.size
     return num / denom
