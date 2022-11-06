@@ -68,3 +68,25 @@ def pickFByAvgSurfaceAreaRatio(units: list[Unit]) -> float:
     num = avg_unit.size - (sqrt(avg_unit.size) - 2) ** 2
     denom = avg_unit.size
     return num / denom
+
+def size_factor(unit: Unit) -> float:
+    return sqrt(unit.size ** 2 * unit.creature.size.value)
+
+def e(unit: Unit, G: float) -> float:
+    num = sqrt(unit.size ** 2 * unit.creature.size.value)
+    denom = G
+    return round(num / denom)
+
+def pickGByMinSize(units: list[Unit]) -> float:
+    min_unit = min(units, key=size_factor)
+    return sqrt(min_unit.size ** 2 * min_unit.creature.size.value)
+
+def s(A: float, H: float, F: float) -> float:
+    num = 3 * A
+    denom = H * F
+    return num / denom
+
+def m(p: int, A: float, H: float, F: float, G: float) -> float:
+    num = p * A
+    denom = 12 * H * F * G
+    return num / denom

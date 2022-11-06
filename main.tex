@@ -413,6 +413,36 @@ A unit's edge length is calculated by the following:
         {G}
 \]
 
+\subsection{Scaling Speed}
+The marching speed $m$ of a unit is determined
+by the scaling of time and space
+as applied to the creature's speed.
+We begin with the creature's speed and divide by 6
+to find the distance travelled per second.
+\[
+    \frac
+        {p}
+        {6}
+\]
+We multiply by the number of seconds per round:
+\[
+    \frac
+        {p}
+        {6}
+    \left(
+        \frac
+            {A}
+            {2 H F}
+    \right)
+\]
+And finally we divide by the number of feet per tile,
+simplifying to
+\[
+    m = \frac
+        {p A}
+        {12 H F G}
+\]
+
 \subsubsection{Minimum Unit Size}
 
 One may select $G$ in such a way that the physically smallest unit

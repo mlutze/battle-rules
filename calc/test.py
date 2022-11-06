@@ -5,7 +5,7 @@ from sim import *
 
 P = 2
 S = 20
-T = 0.5
+T = 2
 n_star = 10
 t_star = 30
 x_star = n_star / 4
@@ -24,13 +24,20 @@ units = [
 H = pickHByMinHealth(units, P = P, n_star = n_star)
 A = pickAByAvgDamage(units, P = P, H = H, x_star = x_star)
 F = pickFByAvgSurfaceAreaRatio(units)
+G = pickGByMinSize(units)
 print("F =", F)
+print("G =", G)
 
+# 
 params = Parameters(P = P, A = A, H = H, S = S)
 print(params)
 print()
+time_per_round = s(A, H, F)
+speed_factor = p(A, H, F)
+print(f"speed factor: {speed_factor}")
 for unit in units:
-    print(f"=== {unit.creature.name} ({unit.size}) ===")
+    edge = e(unit, G)
+    print(f"=== {unit.creature.name} ({unit.size}) ({edge}x{edge}) ===")
     n_value = n(unit, H = H, P = P)
     print(f"Dice: {n_value}")
     for name, attack in unit.creature.attacks.items():
