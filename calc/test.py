@@ -28,21 +28,21 @@ G = pickGByMinSize(units)
 print("F =", F)
 print("G =", G)
 
-# 
 params = Parameters(P = P, A = A, H = H, S = S)
 print(params)
 print()
 time_per_round = s(A, H, F)
-speed_factor = p(A, H, F)
-print(f"speed factor: {speed_factor}")
 for unit in units:
-    edge = e(unit, G)
-    print(f"=== {unit.creature.name} ({unit.size}) ({edge}x{edge}) ===")
+    print(f"=== {unit.creature.name} ({unit.size}) ===")
     n_value = n(unit, H = H, P = P)
+    edge = e(unit, G)
+    speed = m(unit, A, H, F, G)
+    print(f"Speed: {speed}")
+    print(f"Size: {edge}x{edge}")
     print(f"Dice: {n_value}")
     for name, attack in unit.creature.attacks.items():
         t_value = t(attack, params)
         print(f"{name}: {n_value}/{t_value}")
     print()
 
-print(f"Time per round: {A / H / F / T * 6} seconds")
+print(f"Time per round: {time_per_round} seconds")

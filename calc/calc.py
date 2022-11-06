@@ -86,7 +86,7 @@ def s(A: float, H: float, F: float) -> float:
     denom = H * F
     return num / denom
 
-def m(p: int, A: float, H: float, F: float, G: float) -> float:
-    num = p * A
+def m(unit: Unit, A: float, H: float, F: float, G: float) -> float:
+    num = unit.creature.speed * A
     denom = 12 * H * F * G
-    return num / denom
+    return round(num / denom)

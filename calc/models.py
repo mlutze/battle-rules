@@ -22,6 +22,7 @@ class Creature:
     size: Size
     health: float
     ac: int
+    speed: int
     attacks: dict[str, Attack] = field(default_factory=dict)
 
     def __mul__(self, size: int) -> "Unit":
@@ -31,7 +32,7 @@ class Creature:
         return Unit(self, size)
     
     def with_attack(self, name: str, bonus: float, damage: float) -> "Creature":
-        that = Creature(self.name, self.size, self.health, self.ac)
+        that = Creature(self.name, self.size, self.health, self.ac, self.speed)
         for att_name, att0 in self.attacks.items():
             att = Attack(att0.name, att0.bonus, att0.damage, that)
             that.attacks[att_name] = att
