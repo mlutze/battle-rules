@@ -12,7 +12,7 @@ class Size(Enum):
 
 class Attack(NamedTuple):
     name: str
-    bonus: int
+    bonus: float
     damage: float
     creature: "Creature"
 
@@ -30,13 +30,19 @@ class Creature:
     def __rmul__(self, size: int) -> "Unit":
         return Unit(self, size)
     
-    def with_attack(self, name: str, bonus: int, damage: float) -> "Creature":
+    def with_attack(self, name: str, bonus: float, damage: float) -> "Creature":
         that = Creature(self.name, self.size, self.health, self.ac)
         for att_name, att0 in self.attacks.items():
             att = Attack(att0.name, att0.bonus, att0.damage, that)
             that.attacks[att_name] = att
         that.attacks[name] = Attack(name, bonus, damage, that)
         return that
+    
+    def with_multiattack(self, name: str, att_names: list[str]) -> "Creature":
+        atts = [self.attacks[att_name] for att_name in att_names]
+        bonus = sum(att.bonus for att in atts) / len(atts)
+        damage = sum(att.damage for att in atts)
+        return self.with_attack(name, bonus, damage)
     
 class Unit(NamedTuple):
     creature: Creature
