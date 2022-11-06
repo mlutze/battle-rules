@@ -397,11 +397,43 @@ which represents the fraction of a unit that is actually attacking on a given tu
 \end{itemize}
 \subsection{Scaling Space}
 
-\begin{itemize}
-    \item 5 square feet per creature
-    \item 10 square feet per large, etc.
-    \item can use min unit area as baseline
-\end{itemize}
+Each unit takes up space according to its members:
+a unit of 20 medium creatures takes a total of 500 square feet (25 square feet per creature).
+When playing on a grid,
+some rounding must be done to ensure that each unit conforms to the grid;
+i.e., that each unit's tile size is a square number.
+
+We scale the size of units relative to the grid
+according to parameter $G$,
+which indicates the length of the edge of a grid tile.
+A unit's edge length is calculated by the following:
+\[
+    e = \frac
+        {\sqrt{c^2 u}}
+        {G}
+\]
+
+\subsubsection{Minimum Unit Size}
+
+One may select $G$ in such a way that the physically smallest unit
+occupies exactly one square.
+
+First, the smallest unit must be found,
+which is the unit for which the unscaled size value is smallest:
+\[
+    \sqrt{c^2 u}
+\]
+We then select $G$ such that $e = 1$;
+i.e., we solve:
+\[
+    G = \frac
+            {\sqrt{c^2 u}}
+            {1}
+\]
+which is easily simplified to
+\[
+    G = \sqrt{c^2 u}
+\]
 
 \missingfigure{diagram of play}
 
