@@ -28,6 +28,8 @@ G1 = pickGByMinSize(units)
 G2 = pickGByMinSpeed(units, A = A, H = H, F = F)
 G = min(G1, G2)
 print("F =", F)
+print("G1 =", G1)
+print("G2 =", G2)
 print("G =", G)
 
 params = Parameters(P = P, A = A, H = H, S = S)
