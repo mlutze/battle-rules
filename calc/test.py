@@ -24,7 +24,9 @@ units = [
 H = pickHByMinHealth(units, P = P, n_star = n_star)
 A = pickAByAvgDamage(units, P = P, H = H, x_star = x_star)
 F = pickFByAvgSurfaceAreaRatio(units)
-G = pickGByMinSize(units)
+G1 = pickGByMinSize(units)
+G2 = pickGByMinSpeed(units, A = A, H = H, F = F)
+G = min(G1, G2)
 print("F =", F)
 print("G =", G)
 

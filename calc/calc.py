@@ -81,6 +81,12 @@ def pickGByMinSize(units: list[Unit]) -> float:
     min_unit = min(units, key=size_factor)
     return sqrt(min_unit.creature.size.value ** 2 * min_unit.size)
 
+def pickGByMinSpeed(units: list[Unit], A: float, H: float, F: float) -> float:
+    min_unit = min(units, key=lambda u: u.creature.speed)
+    num = min_unit.creature.speed * A
+    denom = 12 * H * F
+    return num / denom
+
 def s(A: float, H: float, F: float) -> float:
     num = 3 * A
     denom = H * F

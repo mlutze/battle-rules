@@ -90,6 +90,7 @@ as well as the unit size.
     \item $b_a$ (attack bonus) -- the to-hit bonus of attack $a$
     \item $u$ (unit size) -- the number of creatures in a unit
 \end{itemize}
+\todo[inline]{creature size, creature speed}
 
 \subsubsection{Output}
 
@@ -115,6 +116,8 @@ resulting in reducing the opponent's number of dice by 1.
     \item $n$ (number of dice) -- the number of dice to use for attacks
     \item $t_a$ (target/hurdle) -- the number to roll above in order to succeed with attack $a$
 \end{itemize}
+\todo[inline]{speed}
+\todo[inline]{global output: scale}
 
 The combination of the two statistics is written $\nicefrac{n}{t_a}$
 and read ``$n$ over $t_a$''.
@@ -383,6 +386,7 @@ a larger choice of $S$ and smaller choice of $H$ and $A$
 would lead to a less significant difference in damage.
 
 \section{Gameplay}\label{sec:game}
+\todo[inline]{move to pre-gameplay: we are still calculating}
 
 \subsection{Scaling Time}
 We can calculate the time of round via an additional parameters $F$,
@@ -395,6 +399,10 @@ which represents the fraction of a unit that is actually attacking on a given tu
 \begin{itemize}
     \item can calculate via assuming only periphery will attack, etc.
 \end{itemize}
+
+\todo[inline]{explain why div by 2}
+\todo[inline]{explain s}
+
 \subsection{Scaling Space}
 
 Each unit takes up space according to its members:
@@ -464,6 +472,32 @@ which is easily simplified to
 \[
     G = \sqrt{c^2 u}
 \]
+
+\subsubsection{Minimum Unit Speed}
+
+One may selection $G$ in such a way that the slowest unit moves one square per turn.
+
+First, the slowest unit must be found,
+which is the unit whose creature speed value $p$ is least.
+
+We rearrange the formula for $m$ in order to find the $G$ value:
+\[
+    G = \frac
+            {p A}
+            {12 H F m}
+\]
+Setting $m$ to 1 tile, we have:
+\[
+    G = \frac
+            {p A}
+            {12 H F}
+\]
+
+\todo[inline]{Mix the two: take $G = min(G_1, G_2)$}
+
+\todo[inline]{REAL GAMEPLAY SECTION}
+\todo[inline]{morale: under half health: DC 10}
+\todo[inline]{heroes act specially: zoom in, zoom out}
 
 \missingfigure{diagram of play}
 
