@@ -70,16 +70,16 @@ def pickFByAvgSurfaceAreaRatio(units: list[Unit]) -> float:
     return num / denom
 
 def size_factor(unit: Unit) -> float:
-    return sqrt(unit.size ** 2 * unit.creature.size.value)
+    return sqrt(unit.creature.size.value ** 2 * unit.size)
 
 def e(unit: Unit, G: float) -> float:
-    num = sqrt(unit.size ** 2 * unit.creature.size.value)
+    num = sqrt(unit.creature.size.value ** 2 * unit.size)
     denom = G
     return round(num / denom)
 
 def pickGByMinSize(units: list[Unit]) -> float:
     min_unit = min(units, key=size_factor)
-    return sqrt(min_unit.size ** 2 * min_unit.creature.size.value)
+    return sqrt(min_unit.creature.size.value ** 2 * min_unit.size)
 
 def s(A: float, H: float, F: float) -> float:
     num = 3 * A

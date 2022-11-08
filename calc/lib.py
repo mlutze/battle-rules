@@ -53,4 +53,20 @@ elephant = Creature("Elephant", Size.Huge, 76, 12, 40) \
     .with_multiattack("Trampling Charge", ["Gore", "Stomp"]) \
     .with_attack("Trampling Charge", 8, 39) \
 
+cultist = Creature("Cultist", Size.Medium, 9, 12, 30) \
+    .with_attack("Scimitar", 3, 4.5) \
+
+duergar = Creature("Duergar", Size.Medium, 26, 16, 25) \
+    .with_attack("War Pick", 4, 11) \
+    .with_attack("Javelin", 4, 9) \
+
+diseased_rat = Creature("Diseased Rat", Size.Small, 7, 12, 30) \
+    .with_attack("Bite", 4, 4.5) \
+
+giant_badger = Creature("Giant Badger", Size.Medium, 13, 10, 30) \
+    .with_attack("Bite", 3, 4.5) \
+    .with_attack("Claws", 3, 6) \
+    .with_multiattack("Multiattack", ["Bite", "Claws"]) \
+
+
 pass

@@ -11,14 +11,14 @@ t_star = 30
 x_star = n_star / 4
 
 units = [
-    kobold * 30, 
-    bandit * 7,
-    bandit * 7,
-    bandit * 7,
-    dryad * 15,
-    armored_commoner * 20,
-    orc * 20,
-    commoner * 20
+    # kobold * 30,
+    # harpy * 10,
+    # giant_badger * 40,
+    # giant_badger * 40,
+    cultist * 100,
+    # elephant * 8,
+    tarrasque * 1,
+    # diseased_rat * 30,
 ]
 
 H = pickHByMinHealth(units, P = P, n_star = n_star)
