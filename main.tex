@@ -89,8 +89,10 @@ as well as the unit size.
     \item $d_a$ (attack damage) -- the average damage done by attack $a$
     \item $b_a$ (attack bonus) -- the to-hit bonus of attack $a$
     \item $u$ (unit size) -- the number of creatures in a unit
+    \item $c$ (creature size) -- the length of a tile that a creature occupies
+        (e.g., 5 feet for a medium creature)
+    \item $p$ (creature speed) -- the movement speed of a creature
 \end{itemize}
-\todo[inline]{creature size, creature speed}
 
 \subsubsection{Output}
 
@@ -112,12 +114,24 @@ A lower roll target is stronger,
 as the goal is to roll above the target,
 resulting in reducing the opponent's number of dice by 1.
 
+\todo[inline]{header for per-creature values}
 \begin{itemize}
     \item $n$ (number of dice) -- the number of dice to use for attacks
     \item $t_a$ (target/hurdle) -- the number to roll above in order to succeed with attack $a$
+    \item $m$ (movement speed) -- the number of tiles a unit moves per turn
+    \item $s$ (seconds per turn) -- the length of one turn of gameplay in seconds
+    \item $e$ (edge length) -- the length of the edge of a grid tile in feet\footnote{
+        The values $s$ and $e$ are global
+    }
 \end{itemize}
-\todo[inline]{speed}
-\todo[inline]{global output: scale}
+
+\todo[inline]{header for global values}
+\begin{itemize}
+    \item $s$ (seconds per turn) -- the length of one turn of gameplay in seconds
+    \item $e$ (edge length) -- the length of the edge of a grid tile in feet
+\end{itemize}
+
+\todo[inline]{explain global/per-creature distinction}
 
 The combination of the two statistics is written $\nicefrac{n}{t_a}$
 and read ``$n$ over $t_a$''.
