@@ -5,7 +5,6 @@ from sim import *
 
 P = 2
 S = 20
-T = 2
 n_star = 10
 t_star = 30
 x_star = n_star / 4
