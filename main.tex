@@ -120,16 +120,12 @@ resulting in reducing the opponent's number of dice by 1.
     \item $n$ (number of dice) -- the number of dice to use for attacks
     \item $t_a$ (target/hurdle) -- the number to roll above in order to succeed with attack $a$
     \item $m$ (movement speed) -- the number of tiles a unit moves per turn
-    \item $s$ (seconds per turn) -- the length of one turn of gameplay in seconds
-    \item $e$ (edge length) -- the length of the edge of a grid tile in feet\footnote{
-        The values $s$ and $e$ are global
-    }
+    \item $e$ (edge length) -- the number of tiles in a unit's edge length
 \end{itemize}
 
 \todo[inline]{header for global values}
 \begin{itemize}
     \item $s$ (seconds per turn) -- the length of one turn of gameplay in seconds
-    \item $e$ (edge length) -- the length of the edge of a grid tile in feet
 \end{itemize}
 
 \todo[inline]{explain global/per-creature distinction}
@@ -408,8 +404,8 @@ We can calculate the time of round via an additional parameters $F$,
 which represents the fraction of a unit that is actually attacking on a given turn.
 \[
     s = \frac
-        {A}
-        {2 H F}
+        {3 A}
+        {H F}
 \]
 \begin{itemize}
     \item can calculate via assuming only periphery will attack, etc.
@@ -418,6 +414,7 @@ which represents the fraction of a unit that is actually attacking on a given tu
 \todo[inline]{look at \texttt{calc.py} for actual(?) formula}
 
 \todo[inline]{explain why div by 2}
+\todo[inline]{explain why mul by 3 (6 / 2)}
 \todo[inline]{explain s}
 
 \subsection{Scaling Space}
@@ -521,6 +518,19 @@ Setting $m$ to 1 tile, we have:
 \missingfigure{diagram of play}
 
 \section{Choosing Parameters}\label{sec:params}
+
+\begin{table*}
+\begin{tabular}{c|c|c|c|c|c}
+        &   $n$             &   $t_a$           &   $m$             &   $e$             &   $s$             \\
+    \hline
+    A   &   -               &   $\downarrow$    &   $\uparrow$      &   -               &   $\uparrow$      \\
+    H   &   $\downarrow$    &   $\uparrow$      &   $\downarrow$    &   -               &   $\downarrow$    \\
+    P   &   *               &   *               &   -               &   -               &   -               \\
+    S   &   -               &   $\uparrow$      &   -               &   -               &   -               \\
+    F   &   -               &   -               &   $\downarrow$    &   -               &   $\downarrow$    \\
+    G   &   -               &   -               &   $\downarrow$    &   $\downarrow$    &   -
+\end{tabular}
+\end{table*}
 
 Parameter selection is important for smooth and interesting gameplay.
 One should consider a number of options when deciding on parameter values.
