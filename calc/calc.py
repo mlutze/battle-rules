@@ -6,18 +6,18 @@ def median(l: list, key):
     l = sorted(l, key = key)
     return l[len(l) // 2]
 
-def n(unit: Unit, P: float, H: float) -> int:
+def n(unit: Unit, *, P: float, H: float) -> int:
     num = unit.creature.health * unit.size * unit.creature.ac ** P
     denom = 10 ** P * H
     return round(num / denom)
 
-def t(attack: Attack, params: Parameters) -> int:
-    num = attack.damage * (10 + attack.bonus) ** params.P * params.H * params.S
-    denom = attack.creature.health * attack.creature.ac ** params.P * params.A
-    return params.S - round(num / denom) + 1
+def t(attack: Attack, *, P: float, H: float, S: int, A: float) -> int:
+    num = attack.damage * (10 + attack.bonus) ** P * H * S
+    denom = attack.creature.health * attack.creature.ac ** P * A
+    return S - round(num / denom) + 1
 
-def expected_damage(n_value: int, t_value: int, params: Parameters) -> float:
-    return n_value * (params.S - t_value) / params.S
+def expected_damage(*, n_value: int, t_value: int, S: int) -> float:
+    return n_value * (S - t_value) / S
 
 def attack_ratio(attack: Attack, P: float) -> float:
     num = attack.damage * (10 + attack.bonus) ** P

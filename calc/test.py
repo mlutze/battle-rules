@@ -6,7 +6,6 @@ from sim import *
 P = 2
 S = 20
 n_star = 10
-t_star = 30
 x_star = n_star / 4
 
 units = [
@@ -26,13 +25,15 @@ F = pickFByAvgSurfaceAreaRatio(units)
 G1 = pickGByMinSize(units)
 G2 = pickGByMinSpeed(units, A = A, H = H, F = F)
 G = min(G1, G2)
+print("H =", H)
+print("A =", A)
 print("F =", F)
+print("P =", P)
+print("S =", S)
 print("G1 =", G1)
 print("G2 =", G2)
 print("G =", G)
 
-params = Parameters(P = P, A = A, H = H, S = S)
-print(params)
 print()
 time_per_round = s(A, H, F)
 for unit in units:
@@ -44,7 +45,7 @@ for unit in units:
     print(f"Size: {edge}x{edge}")
     print(f"Dice: {n_value}")
     for name, attack in unit.creature.attacks.items():
-        t_value = t(attack, params)
+        t_value = t(attack, P = P, H = H, S = S, A = A)
         print(f"{name}: {n_value}/{t_value}")
     print()
 
