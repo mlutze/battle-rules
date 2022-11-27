@@ -14,7 +14,7 @@ def n(unit: Unit, P: float, H: float) -> int:
 def t(attack: Attack, params: Parameters) -> int:
     num = attack.damage * (10 + attack.bonus) ** params.P * params.H * params.S
     denom = attack.creature.health * attack.creature.ac ** params.P * params.A
-    return params.S - round(num / denom)
+    return params.S - round(num / denom) + 1
 
 def expected_damage(n_value: int, t_value: int, params: Parameters) -> float:
     return n_value * (params.S - t_value) / params.S
@@ -22,20 +22,6 @@ def expected_damage(n_value: int, t_value: int, params: Parameters) -> float:
 def attack_ratio(attack: Attack, P: float) -> float:
     num = attack.damage * (10 + attack.bonus) ** P
     denom = attack.creature.health * attack.creature.ac ** P
-    return num / denom
-
-def pickAByMinHurdle(units: list[Unit], P: float, H: float, S: float, t_star: int) -> float:
-    attacks = chain.from_iterable(unit.creature.attacks.values() for unit in units)
-    max_attack: Attack = max(attacks, key=lambda a: attack_ratio(a, P))
-    num = max_attack.damage * (10 + max_attack.bonus) ** P * H * S
-    denom = max_attack.creature.health * max_attack.creature.ac ** P * (S - t_star)
-    return num / denom
-
-def pickAByMaxHurdle(units: list[Unit], P: float, H: float, S: float, t_star: int) -> float:
-    attacks = chain.from_iterable(unit.creature.attacks.values() for unit in units)
-    min_attack: Attack = min(attacks, key=lambda a: attack_ratio(a, P))
-    num = min_attack.damage * (10 + min_attack.bonus) ** P * H * S
-    denom = min_attack.creature.health * min_attack.creature.ac ** P * (S - t_star)
     return num / denom
 
 # TODO maybe change to max attack of each unit

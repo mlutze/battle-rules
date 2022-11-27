@@ -99,14 +99,8 @@ as well as the unit size.
 There are two output values.
 The number of dice is an aggregation of a unit's defensive strength and number.
 It is used as a set of hitpoints during combat.
-The roll target (or \emph{hurdle})\footnote{
-    The term \emph{hurdle} is used to emphasize
-    that the roll must be \emph{above} the given value to succeed,
-    rather than meeting it.
-}
-is an aggregation
+The roll target is an aggregation
 of a unit's offensive strength and accuracy \emph{per die}.
-\todo[inline]{get rid of hurdle idea}
 Regardless of unit size,
 two units of creatures with the same statistics
 will always have the same roll target
@@ -118,7 +112,7 @@ resulting in reducing the opponent's number of dice by 1.
 \todo[inline]{header for per-creature values}
 \begin{itemize}
     \item $n$ (number of dice) -- the number of dice to use for attacks
-    \item $t_a$ (target/hurdle) -- the number to roll above in order to succeed with attack $a$
+    \item $t_a$ (target) -- the number to roll above in order to succeed with attack $a$
     \item $m$ (movement speed) -- the number of tiles a unit moves per turn
     \item $e$ (edge length) -- the number of tiles in a unit's edge length
 \end{itemize}
@@ -260,7 +254,7 @@ We scale it to a probability by dividing by $A$:
 \]
 We now have our true hit chance.
 To turn this into a target roll,
-we multiply by $S$, round, and subtract from $S$
+we multiply by $S$, round, subtract from $S$ and add 1.
 \[
     S -
     \left\lfloor
@@ -268,6 +262,7 @@ we multiply by $S$, round, and subtract from $S$
             {d_a (10 + b_{a})^P H S}
             {h r^P A}
     \right\rceil
+    + 1
 \]
 
 \subsection{Examples}\label{sec:examples}
@@ -309,7 +304,8 @@ For 20 orcs, given $A = 100$, $H = 100$, $P = 2$, and $S = 20$
                 {(6.5) (10 + 5)^2 (100) (20)}
                 {(15) (13)^2 (100)}
         \right\rceil
-            &=   8
+        + 1 
+            &=   9
     \\
     t_g &=  
         20 -
@@ -318,7 +314,8 @@ For 20 orcs, given $A = 100$, $H = 100$, $P = 2$, and $S = 20$
                 {(6.5) (10 + 5)^2 (100) (20)}
                 {(15) (13)^2 (100)}
         \right\rceil
-            &=  3
+        + 1
+            &=  4
 \end{alignat*}
 
 A 20-orc unit then has 6 hit points, and its attacks are
@@ -358,7 +355,8 @@ For 100 commoners, given $A = 100$, $H = 100$, $P = 2$, $S = 20$
                 {(2.5) (10 + 2)^2 (100) (20)}
                 {(4.5) (10)^2 (100)}
         \right\rceil
-            &= 4
+        + 1
+            &= 5
 \end{alignat*}
 
 Equipped with chain shirts, the commoners' AC rises to 13.
@@ -380,7 +378,8 @@ This affects their statistics as follows:
                 {(2.5) (10 + 2)^2 (100) (20)}
                 {(4.5) (13)^2 (100)}
         \right\rceil
-            &= 11
+        + 1
+            &= 12
 \end{alignat*}
 
 Note that while the armored commoners have more dice,
@@ -577,9 +576,6 @@ can be rearranged to
 
 \subsection{The $A$ Parameter}
 
-\todo[inline]{minimum hurdle is bad}
-\todo[inline]{try instead: average damage}
-
 The $A$ parameter defines a ``standard'' amount of damage:
 the amount of damage a unit must do to reduce an opponent's dice by one.
 A low $A$ value can speed up combat,
@@ -627,132 +623,6 @@ We rearrange to get the formula:
         {n d_a (10 + b_a)^P, H}
         {h r^P x_*}
 \]
-
-\todo[inline]{remove minimum hurdle stuff and clean up}
-
-\subsubsection{Minimum Hurdle}
-
-One may select the minimum hurdle that they would like to see in the game.
-For example, one may decide
-that the unit with the most accurate attack (per die)
-should hit on anything but a 1.
-This unit is not necessarily the strongest unit,
-but rather the unit whose attacking strength (of its strongest attack)
-is most significantly stronger than
-its defending strength.
-
-We begin by identifying this unit.
-The unit with the highest attack--defend ratio is the unit for which the following formula is maximal.
-\[
-    \frac
-        {d_a (10 + b_a)^P}
-        {h r^P}
-\]
-This is the formula for hit chance, without the common constants.
-
-Taking all units into account and a given $H$ value, $P$ value, and $S$ value,
-an $A$ value is selected such that this unit will need to roll $S$ to hit.
-
-We now effectively have a new parameter $t_*$, representing the target roll.
-We can then reverse the die formula to derive a formula for $A$:
-\[
-    t_* =
-        S -
-        \left\lfloor
-            \frac
-                {d_a (10 + b_{a})^P H S}
-                {h r^P A}
-        \right\rceil
-\]
-\[
-    \iff
-\]
-\[
-    S - t_* =
-        \left\lfloor
-            \frac
-                {d_a (10 + b_{a})^P H S}
-                {h r^P A}
-        \right\rceil
-\]
-we remove rounding and rearrange to get
-\[
-    A = 
-        \frac
-            {d_a (10 + b_{a})^P H S}
-            {h r^P (S - t_*)}
-\]
-
-\subsubsection{Example: Strongest must roll over 2}
-
-We consider a battle involving 100 unarmored commoners and 20 orcs,
-where $P = 2$.
-The attack--defend ratio for the commoners is
-\[
-    \frac
-        {2.5 (10 + 2)^2}
-        {4.5 (10)^2}
-    =
-    0.8
-\]
-whereas for the orcs the ratio (for greataxes) is
-\[
-    \frac
-        {9.5 (10 + 5)^2}
-        {15 (13)^2}
-    \approx
-    0.843
-\]
-
-As orcs have a greater ratio, their accuracy will be set at 90\% (rolling over 2).
-With $H = 100$, $P = 2$, and $S = 20$,
-we solve:
-\begin{alignat*}{2}
-    A &= 
-        \frac
-            {(9.5) (10 + 5)^2 (100) (20)}
-            {(15) (13)^2 (20 - 2)}
-        &{}\approx 93.7
-\end{alignat*}
-
-By definition, the orcs' greataxe attack now has a roll hurdle of 2.
-Their javelin attack is less likely to deal damage,
-and therefore has a higher roll hurdle:
-\begin{alignat*}{2}
-    t_j &=
-        20 -
-        \left\lfloor
-            \frac
-                {(9.5) (10 + 5)^2 (100) (20)}
-                {(15) (13)^2 (93.7)}
-        \right\rceil
-            &= 8
-\end{alignat*}
-
-Finally, the commoners have the following roll target
-for their club attack.
-\begin{alignat*}{2}
-    t_c &=
-        20 -
-        \left\lfloor
-            \frac
-                {(2.5) (10 + 2)^2 (100) (20)}
-                {(4.5) (10)^2 (93.7)}
-        \right\rceil
-            &= 3
-\end{alignat*}
-
-As the size of the respective units and the $P$ and $H$ values
-are unchanged from Section~\ref{sec:examples},
-the $n$ values calculated for each unit is unchanged.
-The roll for the orc unit's greataxe attack is then $\nicefrac{6}{15}$,
-whereas for the commoner unit's club attack, it is $\nicefrac{5}{15}$.
-
-\subsubsection{Alternative Hurdle}
-
-Similar calculations may be performed to calculate an $A$ value
-such that the maximum hurdle, median hurdle, etc.
-is equal to some value.
 
 \subsection{The $S$ Parameter}
 The $S$ parameter is generally set to 20 in this document,
