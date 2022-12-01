@@ -6,17 +6,17 @@ from sim import *
 P = 2
 S = 20
 n_star = 10
-x_star = n_star / 4
+x_star = n_star
 
 units = [
-    kobold * 30,
-    harpy * 10,
-    giant_badger * 40,
-    giant_badger * 40,
-    cultist * 100,
-    elephant * 8,
-    tarrasque * 1,
-    diseased_rat * 30,
+    bugbear * 40,
+    dryad * 20,
+    giant_badger * 20,
+    bandit * 60,
+    giant_frog * 50,
+    harpy * 30,
+    kobold * 20,
+    kobold * 20
 ]
 
 H = pickHByMinHealth(units, P = P, n_star = n_star)
