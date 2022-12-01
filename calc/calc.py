@@ -1,5 +1,5 @@
 from itertools import chain
-from math import sqrt
+from math import sqrt, ceil
 from models import *
 
 def median(l: list, key):
@@ -82,3 +82,8 @@ def m(unit: Unit, A: float, H: float, F: float, G: float) -> float:
     num = 2 * unit.creature.speed * H
     denom = A * F * G
     return round(num / denom)
+
+def x(attack: Attack, *, G: float) -> float:
+    num = attack.short + attack.long
+    denom = 2 * G
+    return ceil(num / denom)

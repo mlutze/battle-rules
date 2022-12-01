@@ -46,7 +46,8 @@ for unit in units:
     print(f"Dice: {n_value}")
     for name, attack in unit.creature.attacks.items():
         t_value = t(attack, P = P, H = H, S = S, A = A)
-        print(f"{name}: {n_value}/{t_value}")
+        x_value = x(attack, G = G)
+        print(f"{name}: {n_value}/{t_value} ({x_value})")
     print()
 
 print(f"Time per round: {time_per_round} seconds")
