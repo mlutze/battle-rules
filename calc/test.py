@@ -9,14 +9,21 @@ n_star = 10
 x_star = n_star
 
 units = [
-    bugbear * 40,
-    dryad * 20,
-    giant_badger * 20,
-    bandit * 60,
-    giant_frog * 50,
-    harpy * 30,
-    kobold * 20,
-    kobold * 20
+    orc * 50,
+    orc * 50,
+    orc * 50,
+    orc * 50,
+    armored_commoner * 100,
+    armored_commoner * 100,
+
+    bandit * 75,
+    bandit * 75,
+    bandit * 75,
+    bandit * 75,
+    knight * 25,
+    knight * 25,
+    knight * 25,
+    knight * 25 
 ]
 
 H = pickHByMinHealth(units, P = P, n_star = n_star)
