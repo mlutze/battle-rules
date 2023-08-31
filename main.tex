@@ -57,6 +57,8 @@ in turn affecting the duration of the battle.
     \item $H$ (health scalar) -- indicates how many points of creature health (without armor) are equal to one point of unit health
     \item $P$ (accuracy exponent) -- indicates the compounding force of accuracy
     \item $S$ (the size of the die) -- the die to be rolled to determine if attacks hit
+    \item $F$ (fraction attacking) -- the proportion of a unit that is attacking on a turn
+    \item $G$ (grid size) -- the number of feet represented by the edge of a grid tile
 \end{itemize}
 
 Provided they are ascribed valid values,
@@ -65,10 +67,12 @@ the resulting statistics of army $A$ will be at least as strong as those of army
 
 The valid ranges for the parameters are the following:
 \begin{align*}
-    A > 0 \\
-    H > 0 \\
-    P \geq 0 \\
-    S > 0
+    0~<~&A \\
+    0~<~&H \\
+    0~\leq~&P \\
+    0~<~&S \\
+    0~<~&G \\
+    0~<~&F~\leq~1
 \end{align*}
 Section~\ref{sec:params} contains further guidance on selecting values for the parameters.
 
@@ -132,7 +136,7 @@ and read ``$n$ over $t_a$''.
 
 \subsection{Calculations}
 
-The $n$ and $t_a$ values are calculated according to the following formulas:
+The output values are calculated according to the following formulas:
 
 \begin{align*}
     n   &=  
@@ -140,14 +144,22 @@ The $n$ and $t_a$ values are calculated according to the following formulas:
             \frac
                 {h u r^P}
                 {10^P H}
-        \right\rceil \\
+        \right\rceil \\[2ex]
     t_a &=
         S -
         \left\lfloor
             \frac
                 {d_a (10 + b_{a})^P H S}
                 {h r^P A}
-        \right\rceil
+        \right\rceil \\[2ex]
+    e   &=
+        \frac
+            {\sqrt{c^2 u}}
+            {g} \\[2ex]
+    s   &=
+        \frac
+            {3 A}
+            {H F}
 \end{align*}
 
 \subsubsection{Accuracy}
@@ -412,7 +424,7 @@ which represents the fraction of a unit that is actually attacking on a given tu
 \begin{itemize}
     \item can calculate via assuming only periphery will attack, etc.
 \end{itemize}
-
+\todo[inline]{remove repeated formula}
 \todo[inline]{explain why div by 2}
 \todo[inline]{explain why mul by 3 (6 / 2)}
 \todo[inline]{explain s}
@@ -432,8 +444,9 @@ A unit's edge length is calculated by the following:
 \[
     e = \frac
         {\sqrt{c^2 u}}
-        {G}
+        {g}
 \]
+\todo[inline]{remove repeated formula}
 
 \subsection{Scaling Speed}
 The marching speed $m$ of a unit is determined
