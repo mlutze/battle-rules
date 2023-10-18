@@ -57,6 +57,9 @@ class Creature:
     def with_ranged_attack(self, name: str, bonus: float, damage: float, short: int, long: int) -> "Creature":
         return self.with_attack(name, bonus, damage, short, long)
     
+    def named(self, name: str) -> "Creature":
+        return Creature(name, self.size, self.health, self.ac, self.speed, self.attacks)
+    
 class Unit(NamedTuple):
     creature: Creature
     size: int

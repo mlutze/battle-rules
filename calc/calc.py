@@ -27,11 +27,19 @@ def attack_ratio(attack: Attack, P: float) -> float:
 # TODO maybe change to max attack of each unit
 def pickAByAvgDamage(units: list[Unit], P: float, H: float, x_star: int) -> float:
     attacks = chain.from_iterable([(unit, attack) for attack in unit.creature.attacks.values()] for unit in units)
-    avg_attack: Attack = median(attacks, key=lambda a: n(a[0], P = P, H = H) * attack_ratio(a[1], P))
+    avg_attack = median(attacks, key=lambda a: n(a[0], P = P, H = H) * attack_ratio(a[1], P))
     unit: Unit = avg_attack[0]
     attack: Attack = avg_attack[1]
     num =  n(unit, P = P, H = H) * attack.damage * (10 + attack.bonus) ** P * H
     denom = attack.creature.health * attack.creature.ac ** P * x_star
+    return num / denom
+
+def pickAByMinTarget(units: list[Unit], P: float, H: float, S: int, t_star: int) -> float:
+    attacks = chain.from_iterable([attack for attack in unit.creature.attacks.values()] for unit in units)
+    attack = min(attacks, key=lambda a: t(a, P=P, H=H, S=S, A=1))
+    print(attack)
+    num = attack.damage * (10 + attack.bonus) ** P * H * S
+    denom = attack.creature.health * attack.creature.ac ** P * (S - t_star)
     return num / denom
 
 def health_factor(unit: Unit, P: float) -> float:
