@@ -19,7 +19,8 @@ units = [
     cultist.named("Easthamite") * 100,
     orc * 50,
     dryad * 50,
-    trebuchet * 50
+    knight.named("Royal Guard") * 25,
+    giant_elk.named("Breachdweller") * 25,
 ]
 
 H = pickHByMinHealth(units, P = P, n_star = n_star)

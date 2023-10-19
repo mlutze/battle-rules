@@ -75,6 +75,11 @@ giant_badger = Creature("Giant Badger", Size.Medium, 13, 10, 30) \
     .with_melee_attack("Claws", 3, 6, 5) \
     .with_multiattack("Multiattack", ["Bite", "Claws"]) \
 
+giant_elk = Creature("Giant Elk", Size.Huge, 42, 14, 60) \
+    .with_melee_attack("Ram", 6, 11, 10) \
+    .with_melee_attack("Hooves", 6, 22, 5) \
+    .with_melee_attack("Ramming Charge", 6, 18, 10) \
+
 ballista = Creature("Ballista", Size.Large, 50, 15, 15) \
     .with_ranged_attack("Bolt", 6, 16 / 3, 120, 480) \
 
