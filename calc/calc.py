@@ -14,7 +14,7 @@ def n(unit: Unit, *, P: float, H: float) -> int:
 def t(attack: Attack, *, P: float, H: float, S: int, A: float) -> int:
     num = attack.damage * (10 + attack.bonus) ** P * H * S
     denom = attack.creature.health * attack.creature.ac ** P * A
-    return S - round(num / denom) + 1
+    return S - round(num / denom)
 
 def expected_damage(*, n_value: int, t_value: int, S: int) -> float:
     return n_value * (S - t_value) / S

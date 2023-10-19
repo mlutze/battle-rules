@@ -75,5 +75,13 @@ giant_badger = Creature("Giant Badger", Size.Medium, 13, 10, 30) \
     .with_melee_attack("Claws", 3, 6, 5) \
     .with_multiattack("Multiattack", ["Bite", "Claws"]) \
 
+ballista = Creature("Ballista", Size.Large, 50, 15, 15) \
+    .with_ranged_attack("Bolt", 6, 16 / 3, 120, 480) \
+
+trebuchet = Creature("Trebuchet", Size.Huge, 150, 15, 15) \
+    .with_ranged_attack("Trebuchet Stone", 5, 44 / 5, 300, 1200) \
+    
+mangonel = Creature("Mangonel", Size.Large, 100, 15, 15) \
+    .with_ranged_attack("Mangonel Stone", 5, 27 / 5, 200, 800) \
 
 pass

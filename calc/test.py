@@ -7,7 +7,7 @@ P = 2
 S = 20
 n_star = 10
 x_star = n_star
-t_star = 1
+t_star = 0
 
 orcs = [orc * 50] * 20
 dryads = [dryad * 50] * 4
@@ -19,6 +19,7 @@ units = [
     cultist.named("Easthamite") * 100,
     orc * 50,
     dryad * 50,
+    trebuchet * 50
 ]
 
 H = pickHByMinHealth(units, P = P, n_star = n_star)
