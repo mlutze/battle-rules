@@ -16,7 +16,9 @@ rebels = [armored_commoner * 50] * 4
 zealots = [armored_commoner * 50] * 8
 
 units = [
-    cultist.named("Easthamite") * 100,
+    young_easthamite * 50,
+    mounted_young_easthamite * 50,
+    easthamite * 50,
     orc * 50,
     dryad * 50,
     knight.named("Royal Guard") * 25,
