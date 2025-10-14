@@ -90,6 +90,9 @@ young_easthamite = Creature("Young Easthamite", Size.Small, 4.5, 13, 25) \
 easthamite = Creature("Easthamite", Size.Medium, 4.5, 15, 30) \
     .with_melee_attack("Spear", 2, 3.5, 5)
 
+rebellian = Creature("Rebellian", Size.Medium, 4.5, 13, 30) \
+    .with_melee_attack("Longsword", 2, 5.5, 5)
+
 dryad = Creature("Dryad", Size.Medium, 22.5, 16, 30) \
     .with_melee_attack("Club With Shillelagh", 6, 8.5, 5) \
 

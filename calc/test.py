@@ -6,7 +6,7 @@ from sim import *
 P = 2
 S = 20
 n_star = 10
-x_star = n_star
+x_star = 9
 t_star = 0
 
 orcs = [orc * 50] * 20
@@ -19,10 +19,11 @@ units = [
     young_easthamite * 50,
     mounted_young_easthamite * 50,
     easthamite * 50,
+    rebellian * 50,
     orc * 50,
     dryad * 50,
     knight.named("Royal Guard") * 25,
-    giant_elk.named("Breachdweller") * 25,
+    giant_elk.named("Breachdweller") * 10,
 ]
 
 H = pickHByMinHealth(units, P = P, n_star = n_star)
@@ -57,7 +58,7 @@ for unit in units:
     for name, attack in unit.creature.attacks.items():
         t_value = t(attack, P = P, H = H, S = S, A = A)
         x_value = x(attack, G = G)
-        print(f"{name}: {n_value}/{t_value} ({x_value})")
+        print(f"{name}: {n_value}/{t_value + 1} ({x_value})")
         print(f"- average damage: {expected_damage(n_value=n_value, t_value=t_value, S=S)}")
     print()
 
