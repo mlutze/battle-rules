@@ -115,7 +115,7 @@ A lower roll target is stronger,
 as the goal is to roll above the target,
 resulting in reducing the opponent's number of dice by 1.
 
-\todo[inline]{header for per-creature values}
+\paragraph{Per-creature values}
 \begin{itemize}
     \item $n$ (number of dice) -- the number of dice to use for attacks
     \item $t_a$ (target) -- the number to roll above in order to succeed with attack $a$
@@ -124,7 +124,7 @@ resulting in reducing the opponent's number of dice by 1.
     \item $e$ (edge length) -- the number of tiles in a unit's edge length
 \end{itemize}
 
-\todo[inline]{header for global values}
+\paragraph{Global values}
 \begin{itemize}
     \item $s$ (seconds per turn) -- the length of one turn of gameplay in seconds
 \end{itemize}
@@ -152,6 +152,10 @@ The output values are calculated according to the following formulas:
                 {d_a (10 + b_{a})^P H S}
                 {h r^P A}
         \right\rceil \\[2ex]
+    x_a &= \left\lceil\frac
+        {n_a + l_a}
+        {2 G}
+        \right\rceil \\[2ex]
     e   &=
         \frac
             {\sqrt{c^2 u}}
@@ -161,7 +165,6 @@ The output values are calculated according to the following formulas:
             {3 A}
             {H F}
 \end{align*}
-\todo[inline]{need $x_a$}
 
 \subsubsection{Accuracy}
 
@@ -336,6 +339,7 @@ For 20 orcs, given $A = 100$, $H = 100$, $P = 2$, and $S = 20$
 
 A 20-orc unit then has 6 hit points, and its attacks are
 $\nicefrac{6}{8}$ and $\nicefrac{6}{3}$.
+\todo[inline]{need to address other stats too}
 
 \subsubsection{Armored vs Unarmored Commoners}
 
@@ -422,9 +426,7 @@ which represents the fraction of a unit that is actually attacking on a given tu
         {3 A}
         {H F}
 \]
-\begin{itemize}
-    \item can calculate via assuming only periphery will attack, etc.
-\end{itemize}
+\todo[inline]{can calculate via assuming only periphery will attack, etc.}
 \todo[inline]{remove repeated formula}
 \todo[inline]{explain why div by 2}
 \todo[inline]{explain why mul by 3 (6 / 2)}
