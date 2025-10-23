@@ -20,7 +20,7 @@
         }
 
         .form-group label {
-            width: 20px;
+            width: 140px;
             margin-right: 8px;
             text-align: right;
         }
@@ -34,77 +34,85 @@
 </head>
 <body>
     <form class="form-container">
+        <div class="form-column">
+            <div class="form-group">
+                <label for="input-nstar">Minimum dice (n<sub>*</sub>)</label><input id="input-nstar">
+            </div>
+            <div class="form-group">
+                <label for="input-dstar">Average damage (d<sub>*</sub>)</label><input id="input-dstar">
+            </div>
+        </div>
         <!-- First column -->
         <div class="form-column">
             <div class="form-group">
-                <label for="input-A">A</label><input id="input-A">
+                <label for="input-A">Attack scalar (A)</label><input id="input-A">
             </div>
             <div class="form-group">
-                <label for="input-H">H</label><input id="input-H">
+                <label for="input-H">Health scalar (H)</label><input id="input-H">
             </div>
             <div class="form-group">
-                <label for="input-P">P</label><input id="input-P">
+                <label for="input-P">Accuracy exponent (P)</label><input id="input-P">
             </div>
             <div class="form-group">
-                <label for="input-S">S</label><input id="input-S">
+                <label for="input-S">Die size (S)</label><input id="input-S">
             </div>
             <div class="form-group">
-                <label for="input-F">F</label><input id="input-F">
+                <label for="input-F">Fraction attacking (F)</label><input id="input-F">
             </div>
             <div class="form-group">
-                <label for="input-G">G</label><input id="input-G">
+                <label for="input-G">Grid size (G)</label><input id="input-G">
             </div>
         </div>
 
         <!-- Second column -->
         <div class="form-column">
             <div class="form-group">
-                <label for="input-h">h</label><input id="input-h">
+                <label for="input-h">Health (h)</label><input id="input-h">
             </div>
             <div class="form-group">
-                <label for="input-r">r</label><input id="input-r">
+                <label for="input-r">Armor class (r)</label><input id="input-r">
             </div>
             <div class="form-group">
-                <label for="input-d">d</label><input id="input-d">
+                <label for="input-d">Attack damage (d)</label><input id="input-d">
             </div>
             <div class="form-group">
-                <label for="input-b">b</label><input id="input-b">
+                <label for="input-b">Attack bonus (b)</label><input id="input-b">
             </div>
             <div class="form-group">
-                <label for="input-n">n</label><input id="input-n">
+                <label for="input-n">Normal range (n)</label><input id="input-n">
             </div>
             <div class="form-group">
-                <label for="input-l">l</label><input id="input-l">
+                <label for="input-l">Long range (l)</label><input id="input-l">
             </div>
             <div class="form-group">
-                <label for="input-u">u</label><input id="input-u">
+                <label for="input-u">Unit size (u)</label><input id="input-u">
             </div>
             <div class="form-group">
-                <label for="input-c">c</label><input id="input-c">
+                <label for="input-c">Creature size (c)</label><input id="input-c">
             </div>
             <div class="form-group">
-                <label for="input-p">p</label><input id="input-p">
+                <label for="input-p">Speed (p)</label><input id="input-p">
             </div>
         </div>
 
         <div class="form-column">
             <div class="form-group">
-                <label for="output-n">n</label><input disabled="true" id="output-n">
+                <label for="output-n">Dice (n)</label><input disabled="true" id="output-n">
             </div>
             <div class="form-group">
-                <label for="output-t">t</label><input disabled="true" id="output-t">
+                <label for="output-t">Target (t)</label><input disabled="true" id="output-t">
             </div>
             <div class="form-group">
-                <label for="output-x">x</label><input disabled="true" id="output-x">
+                <label for="output-x">Range (x)</label><input disabled="true" id="output-x">
             </div>
             <div class="form-group">
-                <label for="output-m">m</label><input disabled="true" id="output-m">
+                <label for="output-m">Speed (m)</label><input disabled="true" id="output-m">
             </div>
             <div class="form-group">
-                <label for="output-e">e</label><input disabled="true" id="output-e">
+                <label for="output-e">Size (e)</label><input disabled="true" id="output-e">
             </div>
             <div class="form-group">
-                <label for="output-s">s</label><input disabled="true" id="output-s">
+                <label for="output-s">Turn length (s)</label><input disabled="true" id="output-s">
             </div>
         </div>
     </form>
