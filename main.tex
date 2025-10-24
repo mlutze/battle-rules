@@ -537,8 +537,6 @@ and rounding up.
         \right\rceil
 \]
 
-\todo[inline]{$x_star$ needs to change}
-
 \todo[inline]{move to ``selecting parameters'' section}
 
 \todo[inline]{Mix the two: take $G = min(G_1, G_2)$}
@@ -569,7 +567,7 @@ and rounding up.
             &   $A$             &   $H$             &   $P$ &   $S$ &   $F$ &   $G$ \\
     \hline
     $n_*$   &   -               &   $\downarrow$    &   -   &   -   &   -   &   -   \\
-    $x_*$   &   $\downarrow$    &   -               &   -   &   -   &   -   &   -   
+    $d_*$   &   $\downarrow$    &   -               &   -   &   -   &   -   &   -   
 \end{tabular}
 \end{table}
 
@@ -578,7 +576,7 @@ and rounding up.
             &   $n$             &   $t_a$           &   $m$             &   $e$             &   $s$             \\
     \hline
     $n_*$   &   $\uparrow$      &   $\downarrow$    &   $\uparrow$      &   -               &   $\downarrow$    \\
-    $x_*$   &   -               &   $\uparrow$      &   $\downarrow$    &   -               &   $\uparrow$      \\
+    $d_*$   &   -               &   $\uparrow$      &   $\downarrow$    &   -               &   $\uparrow$      \\
 \end{tabular}
 \end{table}
 
@@ -655,16 +653,16 @@ according to the attack-defend ratio calculated by the following formula.
 \]
 With the median attack in hand,
 we can use the unit's statistics to derive an appropriate $A$ value
-such that this attack is most likely to deal our target average damage, $x_*$.
+such that this attack is most likely to deal our target average damage, $d_*$.
 Recall the previously introduced hit chance formula:
 \[
     p = \frac
         {d_a (10 + b_a)^P H}
         {h r^P A}
 \]
-We want to choose a value $A$ such that $x_* = n p$:
+We want to choose a value $A$ such that $d_* = n p$:
 \[
-    x_* = \frac
+    d_* = \frac
         {n d_a (10 + b_a)^P, H}
         {h r^P A}
 \]
@@ -672,7 +670,7 @@ We rearrange to get the formula:
 \[
     A = \frac
         {n d_a (10 + b_a)^P, H}
-        {h r^P x_*}
+        {h r^P d_*}
 \]
 
 \todo[inline]{pick A by min target $t$}
