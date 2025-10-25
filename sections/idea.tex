@@ -1,0 +1,24 @@
+\section{Idea}
+
+The principle properties the wargame rules should satisfy are the following:
+\begin{enumerate}
+    \item \label{itm:smooth} Gameplay should be simple and smooth;
+        i.e., no calculations and few statistics to lookup during play.
+    \item \label{itm:auto} Rules should be automatically derived from the situation,
+        without the need for ad-hoc rule introductions for each situation in play.
+    \item \label{itm:strength} Creature strength should be true to the stats of the individual creatures.
+    \item \label{itm:scale} Rules should scale from smallish skirmishes to large battles.
+\end{enumerate}
+
+In order to address Goal~\ref{itm:smooth}, we separate the conversion into two parts:
+the complex rules to convert a D\&D situation into a wargame situation (Section~\ref{sec:pregame}),
+and the simpler rules to play the wargame (Section~\ref{sec:game}).
+The conversion rules are pure mathematical calculations from creature statistics,
+satisfying Goal~\ref{itm:auto} and Goal~\ref{itm:strength}.
+Finally, we use parameters to scale statistics to an appropriate size for the situation,
+satisfying Goal~\ref{itm:scale}.
+
+The result is a system where each unit in the battle boils down to two numbers.
+Very little math has to be performed during play,
+to permit management of large battlefields
+with minimal confusion.

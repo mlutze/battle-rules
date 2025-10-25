@@ -1,0 +1,374 @@
+\section{Pre-gameplay}\label{sec:pregame}
+
+Before a battle starts,
+calculations are performed based on the participants' D\&D statistics.
+
+\subsection{Parameters}
+
+The parameters are used to scale the battle to an appropriate size.
+They control the likelihood of an attack to hit,
+and number of dice rolled,
+in turn affecting the duration of the battle.
+
+\begin{itemize}
+    \item $A$ (attack scalar) -- roughly indicates how much damage is required to reduce a unit's health by one point
+    \item $H$ (health scalar) -- indicates how many points of creature health (without armor) are equal to one point of unit health
+    \item $P$ (accuracy exponent) -- indicates the compounding force of accuracy
+    \item $S$ (the size of the die) -- the die to be rolled to determine if attacks hit
+    \item $F$ (fraction attacking) -- the proportion of a unit that is attacking on a turn
+    \item $G$ (grid size) -- the number of feet represented by the edge of a grid tile
+\end{itemize}
+
+Provided they are ascribed valid values,
+the invariant is maintained that if army $A$ is objectively stronger than army $B$,
+the resulting statistics of army $A$ will be at least as strong as those of army $B$.
+
+The valid ranges for the parameters are the following:
+\begin{align*}
+    0~<~&A \\
+    0~<~&H \\
+    0~\leq~&P \\
+    0~<~&S \\
+    0~<~&G \\
+    0~<~&F~\leq~1
+\end{align*}
+Section~\ref{sec:params} contains further guidance on selecting values for the parameters.
+
+\subsection{Variables}
+
+We take a single creature's base statistics along with the number of creatures in a unit
+in order to calculate that unit's overall strength.
+
+\subsubsection{Input}
+
+As input, we use a creature's health and AC for its defense,
+and the damage and attack bonus for each of its attacks,
+as well as the unit size.
+
+\begin{itemize}
+    \item $h$ (creature health) -- the maximum hitpoints of a single creature
+    \item $r$ (creature AC) -- the AC of a creature
+    \item $d_a$ (attack damage) -- the average damage done by attack $a$
+    \item $b_a$ (attack bonus) -- the to-hit bonus of attack $a$
+    \item $n_a$ (normal range) -- the normal range of attack $a$
+    \item $l_a$ (long range) -- the maximum range of attack $a$
+    \item $u$ (unit size) -- the number of creatures in a unit
+    \item $c$ (creature size) -- the length of a tile that a creature occupies
+        (e.g., 5 feet for a medium creature)
+    \item $p$ (creature speed) -- the movement speed of a creature
+\end{itemize}
+
+\subsubsection{Output}
+
+There are two output values.
+The number of dice is an aggregation of a unit's defensive strength and number.
+It is used as a set of hitpoints during combat.
+The roll target is an aggregation
+of a unit's offensive strength and accuracy \emph{per die}.
+Regardless of unit size,
+two units of creatures with the same statistics
+will always have the same roll target
+(but may use a different number of dice).
+A lower roll target is stronger,
+as the goal is to roll above the target,
+resulting in reducing the opponent's number of dice by 1.
+
+\paragraph{Per-creature values}
+\begin{itemize}
+    \item $n$ (number of dice) -- the number of dice to use for attacks
+    \item $t_a$ (target) -- the number to roll above in order to succeed with attack $a$
+    \item $x_a$ (extent) -- the maximum number of tiles away from which attack $a$ can be targeted
+    \item $m$ (movement speed) -- the number of tiles a unit moves per turn
+    \item $e$ (edge length) -- the number of tiles in a unit's edge length
+\end{itemize}
+
+\paragraph{Global values}
+\begin{itemize}
+    \item $s$ (seconds per turn) -- the length of one turn of gameplay in seconds
+\end{itemize}
+
+\todo[inline]{explain global/per-creature distinction}
+
+The combination of the two statistics is written $\nicefrac{n}{t_a}$
+and read ``$n$ over $t_a$''.
+
+\subsection{Calculations}
+
+The output values are calculated according to the following formulas:
+
+\begin{align*}
+    n   &=
+        \left\lfloor
+            \frac
+                {h u r^P}
+                {10^P H}
+        \right\rceil \\[2ex]
+    t_a &=
+        S -
+        \left\lfloor
+            \frac
+                {d_a (10 + b_{a})^P H S}
+                {h r^P A}
+        \right\rceil \\[2ex]
+    x_a &= \left\lceil\frac
+        {n_a + l_a}
+        {2 G}
+        \right\rceil \\[2ex]
+    e   &=
+        \frac
+            {\sqrt{c^2 u}}
+            {G} \\[2ex]
+    s   &=
+        \frac
+            {3 A}
+            {H F}
+\end{align*}
+
+\subsubsection{Accuracy}
+
+D\&D's concept of accuracy is a source of complications in the formulas,
+and must be addressed specifically.
+
+We begin by observing that in standard D\&D rules,
+an increase by a factor of $x$ in an attack's accuracy
+can be roughly equivalently represented by a decrease in a defender's
+health by a factor of $x$.
+For example, if an attack normally has a 25\% chance of hitting a defender with 2 hitpoints,
+we might reasonably expect the defender to last 8 rounds.\footnote{
+    This approximation follows intuition,
+    but is not statistically correct with respect to expected values.
+    It is considered sufficient for this draft
+    but may be revisited in a future version.
+}
+If we raise the accuracy to 50\%,
+the defender would need around 4 hitpoints to last 8 rounds.
+
+Accuracy of attacks in standard D\&D is not derived from one statistic,
+but from two: the attacker's attack bonus and the defender's AC.
+Modeling this directly would present a problem for the transformation,
+as it would necessitate an additional statistic and comparison during gameplay.
+Instead, we try to bundle the effect of AC and health into $n$,
+and the effect of attack bonus into $t_a$.
+
+It is not possible to replicate the effect of accuracy fully, however.
+To demonstrate, we turn to an example of a commoner (+2 attack bonus)
+attacking a tarrasque (25 AC).
+Barring critical hits, the commoner will never be able to hit the tarrasque,
+as the maximum roll of 22 is less than the tarrasque's AC.
+The result is that the $n$ value for a tarrasque unit must be infinite,
+or that the $t_a$ value for a commoner unit must be at least 20.
+
+Clearly, neither of these options is practical.
+Instead of modeling the asymptotic effect of AC and attack bonus directly,
+we use power function to approximate it.
+AC is converted into a defense factor:
+\[
+    \left(\frac{r}{10}\right)^P
+\]
+AC is first divided by 10,
+as 10 is the standard AC without bonuses or penalties,
+then raised to a power $P$ which represents the multiplicative power of AC.
+
+The factor for attack bonus is derived similarly,
+but 10 added, establishing 0 as the baseline attack bonus:
+\[
+    \left(\frac{10 + b_a}{10}\right)^P
+\]
+
+\subsubsection{Deriving the Formulas}
+
+The $n$ formula is relatively simple:
+It is the total health of the unit,
+multiplied by a factor representing the value of armor,
+divided by the $H$ parameter:
+\[
+    \frac
+        {h u (\frac{r}{10})^P}
+        {H}
+\]
+We round and simplify to get our value for $n$.
+
+The $t$ formula is more complex,
+as it must take into account both attacking strength and defensive strength.
+Because $n$ dice (proportional to defense) will be rolled,
+in order to avoid a compounding impact of defense,
+the defense must be divided out of the equation.
+
+The development of the formula is as follows:
+The attack value \emph{per creature} is proportional to
+the average damage multiplied by the attack bonus factor.
+\[
+    d_a \left(\frac{10 + b_{a}}{10}\right)^{P}
+\]
+The total attack value of the unit is then
+\[
+    d_a u \left(\frac{10 + b_{a}}{10}\right)^{P}
+\]
+We divide this by the number of dice to get attack value per die:
+\[
+    \frac
+        {d_a u \left(\frac{10 + b_{a}}{10}\right)^{P}}
+        {n}
+\]
+But to reduce rounding error we instead use the unrounded formula for $n$:
+\[
+    \frac
+        {d_a u \left(\frac{10 + b_{a}}{10}\right)^{P}}
+        {\frac{h u r^P}{10^P H}}
+\]
+which simplifies to
+\[
+    \frac
+        {d_a (10 + b_{a})^P H}
+        {h r^P}
+\]
+This value is proportional to our hit chance.
+We scale it to a probability by dividing by $A$:
+\[
+    \frac
+        {d_a (10 + b_{a})^P H}
+        {h r^P A}
+\]
+We now have our true hit chance.
+To turn this into a target roll,
+we multiply by $S$, round, subtract from $S$ and add 1.
+\[
+    S -
+    \left\lfloor
+        \frac
+            {d_a (10 + b_{a})^P H S}
+            {h r^P A}
+    \right\rceil
+    + 1
+\]
+
+\subsection{Examples}\label{sec:examples}
+
+We now demonstrate the use of the formulas through examples.
+
+\subsubsection{Unit of 20 Orcs}
+
+An orc has the following relevant statistics:
+\begin{itemize}
+    \item $h = 15$ HP (2d8 + 6)
+    \item $r = 13$ AC
+    \item Javelin Attack:
+        \begin{itemize}
+            \item $b_j = +5$ to hit
+            \item $d_j = 6.5$ damage (d6 + 3)
+        \end{itemize}
+    \item Greataxe Attack:
+        \begin{itemize}
+            \item $b_g = +5$ to hit
+            \item $d_g = 9.5$ damage (d12 + 3)
+        \end{itemize}
+\end{itemize}
+
+For 20 orcs, given $A = 100$, $H = 100$, $P = 2$, and $S = 20$
+\begin{alignat*}{2}
+    n   &=
+        \left\lfloor
+            \frac
+                {(15) (20) (13)^2}
+                {(10)^2 100}
+        \right\rceil
+            &=  5
+    \\
+    t_a &=
+        20 -
+        \left\lfloor
+            \frac
+                {(6.5) (10 + 5)^2 (100) (20)}
+                {(15) (13)^2 (100)}
+        \right\rceil
+        + 1
+            &=   9
+    \\
+    t_g &=
+        20 -
+        \left\lfloor
+            \frac
+                {(6.5) (10 + 5)^2 (100) (20)}
+                {(15) (13)^2 (100)}
+        \right\rceil
+        + 1
+            &=  4
+\end{alignat*}
+
+A 20-orc unit then has 6 hit points, and its attacks are
+$\nicefrac{6}{8}$ and $\nicefrac{6}{3}$.
+\todo[inline]{need to address other stats too}
+
+\subsubsection{Armored vs Unarmored Commoners}
+
+Here we see the effect of armor on the statistics.
+A commoner has the following relevant statistics:
+
+\begin{itemize}
+    \item $h = 4.5$ HP (1d8)
+    \item $r = 10$ AC
+    \item Club Attack:
+        \begin{itemize}
+            \item $b_c = +2$ to hit
+            \item $d_c = 2.5$ damage (1d4)
+        \end{itemize}
+\end{itemize}
+
+
+For 100 commoners, given $A = 100$, $H = 100$, $P = 2$, $S = 20$
+
+\begin{alignat*}{2}
+    n   &=
+        \left\lfloor
+            \frac
+                {(4.5) (100) (10^2)}
+                {(10^2) (100)}
+        \right\rceil
+            &= 4
+    \\
+    t_c &=
+        20 -
+        \left\lfloor
+            \frac
+                {(2.5) (10 + 2)^2 (100) (20)}
+                {(4.5) (10)^2 (100)}
+        \right\rceil
+        + 1
+            &= 5
+\end{alignat*}
+
+Equipped with chain shirts, the commoners' AC rises to 13.
+This affects their statistics as follows:
+
+\begin{alignat*}{2}
+    n   &=
+        \left\lfloor
+            \frac
+                {(4.5) (100) (13^2)}
+                {(10^2) (100)}
+        \right\rceil
+            &= 8
+    \\
+    t_c &=
+        20 -
+        \left\lfloor
+            \frac
+                {(2.5) (10 + 2)^2 (100) (20)}
+                {(4.5) (13)^2 (100)}
+        \right\rceil
+        + 1
+            &= 12
+\end{alignat*}
+
+Note that while the armored commoners have more dice,
+representing their superior defense,
+their larger die size causes each individual die less likely to land a hit.
+As the units have the same size and weapons,
+their ought to have the same attacking power.
+Confirming the validity of the conversion,
+the expected damage of each unit is roughly equivalent:
+$4(\frac{16}{20}) = 3.2$ for the unarmored commoners,
+and $9(\frac{10}{20}) = 3.6$ for the armored commoners.
+The discrepancy lies in the choice of parameters;
+a larger choice of $S$ and smaller choice of $H$ and $A$
+would lead to a less significant difference in damage.
