@@ -125,6 +125,7 @@ We rearrange to get the formula:
 \]
 
 \todo[inline]{pick A by min target $t$}
+
 \subsection{The $S$ Parameter}
 The $S$ parameter is generally set to 20 in this document,
 as it balances granularity and simplicity,
@@ -141,3 +142,126 @@ These issues may be addressed by increasing the $S$ parameter to 100,
 for example.
 However, they may instead point to an issue that some unit
 is so weak as to be in ineffectual and might be disregarded for the battle.
+
+\subsection{The $F$ Parameter}
+
+\subsubsection{Scaling Time}
+We can calculate the time of round via the $F$ parameter,
+which represents the fraction of a unit that is actually attacking on a given turn.
+\[
+    s = \frac
+        {3 A}
+        {H F}
+\]
+\todo[inline]{can calculate via assuming only periphery will attack, etc.}
+\todo[inline]{explain why div by 2}
+\todo[inline]{explain why mul by 3 (6 / 2)}
+\todo[inline]{explain s}
+
+\subsection{The $G$ Parameter}
+
+\subsubsection{Scaling Space}
+
+Each unit takes up space according to its members:
+a unit of 20 medium creatures takes a total of 500 square feet (25 square feet per creature).
+When playing on a grid,
+some rounding must be done to ensure that each unit conforms to the grid;
+i.e., that each unit's tile size is a square number.
+
+We scale the size of units relative to the grid
+according to parameter $G$,
+which indicates the length of the edge of a grid tile.
+A unit's edge length is calculated by the following:
+\[
+    e = \frac
+        {\sqrt{c^2 u}}
+        {G}
+\]
+
+\subsubsection{Scaling Speed}
+The marching speed $m$ of a unit is determined
+by the scaling of time and space
+as applied to the creature's speed.
+We begin with the creature's speed and divide by 6
+to find the distance traveled per second.
+\[
+    \frac
+        {p}
+        {6}
+\]
+We multiply by the number of seconds per round:
+\[
+    \frac
+        {p}
+        {6}
+    \left(
+        \frac
+            {A}
+            {2 H F}
+    \right)
+\]
+And finally we divide by the number of feet per tile,
+simplifying to
+\[
+    m = \frac
+        {p A}
+        {12 H F G}
+\]
+
+\subsubsection{Minimum Unit Size}
+
+One may select $G$ in such a way that the physically smallest unit
+occupies exactly one square.
+
+First, the smallest unit must be found,
+which is the unit for which the unscaled size value is smallest:
+\[
+    \sqrt{c^2 u}
+\]
+We then select $G$ such that $e = 1$;
+i.e., we solve:
+\[
+    G = \frac
+            {\sqrt{c^2 u}}
+            {1}
+\]
+which is easily simplified to
+\[
+    G = \sqrt{c^2 u}
+\]
+
+\subsubsection{Minimum Unit Speed}
+
+One may selection $G$ in such a way that the slowest unit moves one square per turn.
+
+First, the slowest unit must be found,
+which is the unit whose creature speed value $p$ is least.
+
+We rearrange the formula for $m$ in order to find the $G$ value:
+\[
+    G = \frac
+            {p A}
+            {12 H F m}
+\]
+Setting $m$ to 1 tile, we have:
+\[
+    G = \frac
+            {p A}
+            {12 H F}
+\]
+
+\subsubsection{Attack Range}
+
+With the size of the grid established, the attack range for the units may be established.
+This is done simply by taking the average of the normal and long ranges for an attack,
+dividing by the grid size,
+and rounding up.
+
+\[
+    x_a = \left\lceil\frac
+        {n_a + l_a}
+        {2 G}
+        \right\rceil
+\]
+
+\todo[inline]{Mix the two: take $G = min(G_1, G_2)$}
