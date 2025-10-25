@@ -60,7 +60,7 @@ as well as the unit size.
 
 \subsubsection{Output}
 
-There are two output values.
+There are two output values.\todo{N output values}
 The number of dice is an aggregation of a unit's defensive strength and number.
 It is used as a set of hitpoints during combat.
 The roll target is an aggregation
@@ -97,6 +97,7 @@ and read ``$n$ over $t_a$''.
 The output values are calculated according to the following formulas:
 
 \begin{align*}
+\intertext{\textbf{Per-creature values}}
     n   &=
         \left\lfloor
             \frac
@@ -118,6 +119,7 @@ The output values are calculated according to the following formulas:
         \frac
             {\sqrt{c^2 u}}
             {G} \\[2ex]
+\intertext{\textbf{Global values}}
     s   &=
         \frac
             {3 A}
