@@ -1,0 +1,25 @@
+\subsection{Select general and meta-parameters}
+
+There are two parameters that do not affect scaling,
+and generally can be selected before anything else:
+
+\begin{itemize}
+    \item $S$ (die size) -- the die to be rolled to determine whether attacks hit
+    \item $P$ (accuracy exponent) -- controls the compounding force of accuracy
+\end{itemize}
+
+Because the d20 is the typical die for determining whether attacks hit,
+it is generally advisable to use $S = 20$.
+However, larger dice will lead to greater granularity:
+if there is a large disparity in power among units,
+$S = 100$ or even greater may be desirable.
+It is recommended that $P = 2$.
+
+There are two parameters that may be used to guide selection of the scaling parameters:
+
+\begin{itemize}
+    \item $N$ (minimum health) -- the minimum health points for any unit
+    \item $D$ (mean damage) -- the mean damage done by any unit
+\end{itemize}
+
+\todo[inline]{$N$ is $n_*$ in explanations later; $D$ is $d_*$. (But not in the new stuff!)}

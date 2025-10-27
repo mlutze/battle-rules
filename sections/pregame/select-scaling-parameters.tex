@@ -1,4 +1,4 @@
-\subsection{Select parameters}
+\subsection{Select scaling parameters}
 
 
 The parameters are used to scale the battle to an appropriate size.
@@ -11,8 +11,6 @@ The parameters are summarized below.
 \begin{itemize}
     \item $A$ (attack scalar) -- roughly indicates how much damage is required to reduce a unit's health by one point
     \item $H$ (health scalar) -- indicates how many points of creature health (without armor) are equal to one point of unit health
-    \item $P$ (accuracy exponent) -- indicates the compounding force of accuracy
-    \item $S$ (the size of the die) -- the die to be rolled to determine if attacks hit
     \item $F$ (fraction attacking) -- the proportion of a unit that is attacking on a turn
     \item $G$ (grid size) -- the number of feet represented by the edge of a grid tile
 \end{itemize}
@@ -22,15 +20,6 @@ the invariant is maintained that if army $A$ is objectively stronger than army $
 the resulting statistics of army $A$ will be at least as strong as those of army $B$.
 
 \section{Choosing Parameters}\label{sec:params}
-
-\todo[inline]{meta-parameters}
-
-\subsection{Metaparameters}\label{sec:metaparams}
-
-Because the parameters are fairly abstract,
-it better to decide them via metaparameters
-that correspond to more concrete statistics.
-\todo{introduce n-star and d-star}
 
 \begin{table}
 \begin{tabular}{c|c|c|c|c|c}
@@ -178,6 +167,10 @@ is so weak as to be in ineffectual and might be disregarded for the battle.
 \subsection{The $F$ Parameter}
 
 \subsubsection{Scaling Time}
+
+\[
+    F = \sqrt{u_\rightarrow}
+\]
 We can calculate the time of round via the $F$ parameter,
 which represents the fraction of a unit that is actually attacking on a given turn.
 \[

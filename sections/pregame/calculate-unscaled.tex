@@ -1,4 +1,36 @@
 \subsection{Calculate unscaled statistics}\label{sec:calculate-unscaled}
 
-\todo[inline]{actually the order you do this in is kind of complicated...}
-\todo[inline]{maybe collecting these unscaled statistics is fine}
+From the general parameters and the input statistics of the units
+partaking in the battle,
+we next calculate some \emph{unscaled} statistics.
+These will be used to help select the parameters in in Section~\ref{sec:params}.
+Specifically, the statistics we will calculate are:
+%
+\begin{itemize}
+    \item $n_*$ (health factor) -- a statistic indicating the total defensive power of a unit
+    \item $d_*$ (attack factor) -- a statistic indicating the total offensive power of a unit as a proportion of its defense
+    \item $e_*$ (space factor) -- a statistic indicating the total space taken by a unit
+\end{itemize}
+%
+
+These statistics are calculated according to the following formulas:
+%
+\begin{align*}
+    n_* &= hur^P \\
+    d_* &= \frac{
+        n d_a (10 + b_a)^P
+    }{
+        h r^P
+    } \\
+    e_* &= \sqrt{c^2 u}
+\end{align*}
+%
+From these statistics, we calulate the following aggregate statistics:
+%
+\begin{itemize}
+    \item $n_\downarrow$ (minimum health factor) the minimum value of the health factor among all units
+    \item $d_\rightarrow$ (median attack factor) the median value of the attack factor among all units
+    \item $e_\downarrow$ (minimum space factor) the minimum value of the space factor among all units
+    \item $u_\rightarrow$ (median unit number) the median number of creatures in a unit
+    \item $p_\downarrow$ (minimum unit speed) the minimum value of the speed of creatures in a unit
+\end{itemize}
