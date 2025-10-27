@@ -1,1 +1,26 @@
 \subsection{Gather Statistics}
+
+The next step is to gather the relevant statistics
+for each unit involved in the battle.
+The required statistics are summarized below,
+each with an associated symbol,
+to be used in calculations in Section~\ref{sec:calculate}.
+%
+\begin{itemize}
+    \item $h$ (creature health) -- the maximum hitpoints of a single creature
+    \item $r$ (creature AC) -- the AC of a creature
+    \item $d_a$ (attack damage) -- the average damage done by attack $a$
+    \item $b_a$ (attack bonus) -- the to-hit bonus of attack $a$
+    \item $n_a$ (normal range) -- the normal range of attack $a$
+    \item $l_a$ (long range) -- the maximum range of attack $a$
+    \item $u$ (unit size) -- the number of creatures in the unit
+    \item $c$ (creature size) -- the length of a tile that a creature occupies
+        (e.g., 5 feet for a medium creature)
+    \item $p$ (creature speed) -- the movement speed of a creature
+\end{itemize}
+%
+Some statistics are subscripted, such as $d_a$.
+These are per-attack statistics.
+A unit with both a sling attack and a sword attack
+would have both a $d_\textsf{sling}$ statistic
+and a $d_\textsf{sword}$ statistic.

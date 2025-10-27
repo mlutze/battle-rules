@@ -6,6 +6,7 @@ They control the damage done by attacks,
 the health of units in the battle,
 and the scaling of the board size,
 in turn affecting the duration of the battle.
+The parameters are summarized below.
 
 \begin{itemize}
     \item $A$ (attack scalar) -- roughly indicates how much damage is required to reduce a unit's health by one point
@@ -19,17 +20,6 @@ in turn affecting the duration of the battle.
 Provided they are ascribed valid values,
 the invariant is maintained that if army $A$ is objectively stronger than army $B$,
 the resulting statistics of army $A$ will be at least as strong as those of army $B$.
-
-The valid ranges for the parameters are the following:
-\begin{align*}
-    0~<~&A \\
-    0~<~&H \\
-    0~\leq~&P \\
-    0~<~&S \\
-    0~<~&G \\
-    0~<~&F~\leq~1
-\end{align*}
-Section~\ref{sec:params} contains further guidance on selecting values for the parameters.
 
 \section{Choosing Parameters}\label{sec:params}
 
