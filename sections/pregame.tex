@@ -11,41 +11,10 @@ There are 4 steps to the pre-gameplay calculation:
     \item Calculate the scaled statistics each unit.
 \end{enumerate}
 
-\subsection{Organize}
-
-\subsection{Gather statistics}
-
-\subsection{Select parameters}
-
-The parameters are used to scale the battle to an appropriate size.
-They control the damage done by attacks,
-the health of units in the battle,
-and the scaling of the board size,
-in turn affecting the duration of the battle.
-
-\begin{itemize}
-    \item $A$ (attack scalar) -- roughly indicates how much damage is required to reduce a unit's health by one point
-    \item $H$ (health scalar) -- indicates how many points of creature health (without armor) are equal to one point of unit health
-    \item $P$ (accuracy exponent) -- indicates the compounding force of accuracy
-    \item $S$ (the size of the die) -- the die to be rolled to determine if attacks hit
-    \item $F$ (fraction attacking) -- the proportion of a unit that is attacking on a turn
-    \item $G$ (grid size) -- the number of feet represented by the edge of a grid tile
-\end{itemize}
-
-Provided they are ascribed valid values,
-the invariant is maintained that if army $A$ is objectively stronger than army $B$,
-the resulting statistics of army $A$ will be at least as strong as those of army $B$.
-
-The valid ranges for the parameters are the following:
-\begin{align*}
-    0~<~&A \\
-    0~<~&H \\
-    0~\leq~&P \\
-    0~<~&S \\
-    0~<~&G \\
-    0~<~&F~\leq~1
-\end{align*}
-Section~\ref{sec:params} contains further guidance on selecting values for the parameters.
+\input{sections/pregame/organize.tex}
+\input{sections/pregame/gather-statistics.tex}
+\input{sections/pregame/select-parameters.tex}
+\input{sections/pregame/calculate.tex}
 
 \subsection{Variables}
 
@@ -139,123 +108,6 @@ The output values are calculated according to the following formulas:
             {H F}
 \end{align*}
 
-\subsubsection{Accuracy}
-
-D\&D's concept of accuracy is a source of complications in the formulas,
-and must be addressed specifically.
-
-We begin by observing that in standard D\&D rules,
-an increase by a factor of $x$ in an attack's accuracy
-can be roughly equivalently represented by a decrease in a defender's
-health by a factor of $x$.
-For example, if an attack normally has a 25\% chance of hitting a defender with 2 hitpoints,
-we might reasonably expect the defender to last 8 rounds.\footnote{
-    This approximation follows intuition,
-    but is not statistically correct with respect to expected values.
-    It is considered sufficient for this draft
-    but may be revisited in a future version.
-}
-If we raise the accuracy to 50\%,
-the defender would need around 4 hitpoints to last 8 rounds.
-
-Accuracy of attacks in standard D\&D is not derived from one statistic,
-but from two: the attacker's attack bonus and the defender's AC.
-Modeling this directly would present a problem for the transformation,
-as it would necessitate an additional statistic and comparison during gameplay.
-Instead, we try to bundle the effect of AC and health into $n$,
-and the effect of attack bonus into $t_a$.
-
-It is not possible to replicate the effect of accuracy fully, however.
-To demonstrate, we turn to an example of a commoner (+2 attack bonus)
-attacking a tarrasque (25 AC).
-Barring critical hits, the commoner will never be able to hit the tarrasque,
-as the maximum roll of 22 is less than the tarrasque's AC.
-The result is that the $n$ value for a tarrasque unit must be infinite,
-or that the $t_a$ value for a commoner unit must be at least 20.
-
-Clearly, neither of these options is practical.
-Instead of modeling the asymptotic effect of AC and attack bonus directly,
-we use power function to approximate it.
-AC is converted into a defense factor:
-\[
-    \left(\frac{r}{10}\right)^P
-\]
-AC is first divided by 10,
-as 10 is the standard AC without bonuses or penalties,
-then raised to a power $P$ which represents the multiplicative power of AC.
-
-The factor for attack bonus is derived similarly,
-but 10 added, establishing 0 as the baseline attack bonus:
-\[
-    \left(\frac{10 + b_a}{10}\right)^P
-\]
-
-\subsubsection{Deriving the Formulas}
-
-The $n$ formula is relatively simple:
-It is the total health of the unit,
-multiplied by a factor representing the value of armor,
-divided by the $H$ parameter:
-\[
-    \frac
-        {h u (\frac{r}{10})^P}
-        {H}
-\]
-We round and simplify to get our value for $n$.
-
-The $t$ formula is more complex,
-as it must take into account both attacking strength and defensive strength.
-Because $n$ dice (proportional to defense) will be rolled,
-in order to avoid a compounding impact of defense,
-the defense must be divided out of the equation.
-
-The development of the formula is as follows:
-The attack value \emph{per creature} is proportional to
-the average damage multiplied by the attack bonus factor.
-\[
-    d_a \left(\frac{10 + b_{a}}{10}\right)^{P}
-\]
-The total attack value of the unit is then
-\[
-    d_a u \left(\frac{10 + b_{a}}{10}\right)^{P}
-\]
-We divide this by the number of dice to get attack value per die:
-\[
-    \frac
-        {d_a u \left(\frac{10 + b_{a}}{10}\right)^{P}}
-        {n}
-\]
-But to reduce rounding error we instead use the unrounded formula for $n$:
-\[
-    \frac
-        {d_a u \left(\frac{10 + b_{a}}{10}\right)^{P}}
-        {\frac{h u r^P}{10^P H}}
-\]
-which simplifies to
-\[
-    \frac
-        {d_a (10 + b_{a})^P H}
-        {h r^P}
-\]
-This value is proportional to our hit chance.
-We scale it to a probability by dividing by $A$:
-\[
-    \frac
-        {d_a (10 + b_{a})^P H}
-        {h r^P A}
-\]
-We now have our true hit chance.
-To turn this into a target roll,
-we multiply by $S$, round, subtract from $S$ and add 1.
-\[
-    S -
-    \left\lfloor
-        \frac
-            {d_a (10 + b_{a})^P H S}
-            {h r^P A}
-    \right\rceil
-    + 1
-\]
 
 \subsection{Examples}\label{sec:examples}
 
