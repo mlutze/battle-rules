@@ -19,7 +19,13 @@ There are two parameters that may be used to guide selection of the scaling para
 
 \begin{itemize}
     \item $N$ (minimum health) -- the minimum health points for any unit
-    \item $D$ (mean damage) -- the mean damage done by any unit
+    \item $D$ (mean damage) -- the average damage done by the average unit on its turn
 \end{itemize}
+
+Typically, setting $N = 10$ is a reasonable choice for scaling the battle.
+The $D$ parameter is more likely to need adjustment after seeing results,
+but $D = 5$ is a reasonable starting value,
+as it indicates the average unit could eliminate the weakest unit in two turns.
+
 
 \todo[inline]{$N$ is $n_*$ in explanations later; $D$ is $d_*$. (But not in the new stuff!)}

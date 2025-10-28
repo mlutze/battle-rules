@@ -278,14 +278,14 @@ Setting $m$ to 1 tile, we have:
 \subsubsection{Attack Range}
 
 With the size of the grid established, the attack range for the units may be established.
-This is done simply by taking the average of the normal and long ranges for an attack,
+This is done simply by taking the long range for an attack,
 dividing by the grid size,
 and rounding up.
 
 \[
     x_a = \left\lceil\frac
-        {n_a + l_a}
-        {2 G}
+        {l_a}
+        {G}
         \right\rceil
 \]
 
