@@ -1,5 +1,28 @@
 \section{Gameplay}
 
+Gameplay proceeds generally similarly to combat in D\&D 5e:
+Each round consists of each unit taking a turn.
+On its turn,
+a unit may either:
+\begin{itemize}
+    \item move and attack
+    \item move twice
+\end{itemize}
+
+\subsection{Movement}
+A unit may move a number of squares up to its speed ($m$).
+If a unit leaves the set of squares adjacent to an enemy,
+it draws an attack of opportunity from that enemy
+even if that enemy has already made an attack of opportunity this round
+(there is no ``reaction tracking'').
+
+\subsection{Attacking}
+An attack is made by rolling a number of dice equal to the unit's current dice pool ($n$),
+which also represents its health.
+For each roll greater or equal to the attack target number $t_a$,
+the attack deals one damage,
+reducing the target's dice pool by one die.
+
 \todo[inline]{REAL GAMEPLAY SECTION}
 \todo[inline]{morale: under half health: DC 10}
 \todo[inline]{heroes act specially: zoom in, zoom out}

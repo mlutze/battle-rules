@@ -1,1 +1,51 @@
 \subsection{Calculate scaled statistics}\label{sec:calculate-scaled}
+
+Finally, it is possible to calculate the scaled statistics of the units.
+Each unit has a set of new statistics,
+while one final statistic represents the time of a round of combat.
+
+\paragraph{Per-unit statistics}
+\begin{itemize}
+    \item $n$ (number of dice) -- the number of dice to use for attacks
+    \item $t_a$ (target) -- the number to roll above in order to succeed with attack $a$
+    \item $x_a$ (extent) -- the maximum number of tiles away from which attack $a$ can be targeted
+    \item $m$ (movement speed) -- the number of tiles a unit moves per turn
+    \item $e$ (edge length) -- the number of tiles in a unit's edge length
+\end{itemize}
+
+\paragraph{Global statistics}
+\begin{itemize}
+    \item $s$ (seconds per turn) -- the length of one turn of gameplay in seconds
+\end{itemize}
+
+These can be calculated according to the following formulas:
+
+\begin{align*}
+\intertext{\textbf{Per-creature values}}
+    n   &=
+        \left\lfloor
+            \frac
+                {h u r^P}
+                {10^P H}
+        \right\rceil \\[2ex]
+    t_a &=
+        S -
+        \left\lfloor
+            \frac
+                {d_a (10 + b_{a})^P H S}
+                {h r^P A}
+        \right\rceil \\[2ex]
+    x_a &= \left\lceil\frac
+        {n_a + l_a}
+        {2 G}
+        \right\rceil \\[2ex]
+    e   &=
+        \frac
+            {\sqrt{c^2 u}}
+            {G} \\[2ex]
+\intertext{\textbf{Global values}}
+    s   &=
+        \frac
+            {3 A}
+            {H F}
+\end{align*}
